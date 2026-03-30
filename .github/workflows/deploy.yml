@@ -29,6 +29,13 @@ jobs:
       - name: Build production bundle
         run: npm run build
 
+      # ── 4.5. Inject production DB credentials into config.php ─────────
+      - name: Inject DB credentials
+        run: |
+          sed -i "s|getenv('DB_USER') ?: ''|getenv('DB_USER') ?: '${{ secrets.DB_USER }}'|g" api/config.php
+          sed -i "s|getenv('DB_PASS') ?: ''|getenv('DB_PASS') ?: '${{ secrets.DB_PASS }}'|g" api/config.php
+          sed -i "s|getenv('DB_NAME') ?: ''|getenv('DB_NAME') ?: '${{ secrets.DB_NAME }}'|g" api/config.php
+
       # ── 5. Deploy built frontend (dist/) → public_html/ ───────────────
       - name: Deploy frontend to Hostinger
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5

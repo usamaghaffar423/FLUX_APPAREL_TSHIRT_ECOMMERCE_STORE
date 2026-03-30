@@ -4,7 +4,7 @@
  *
  * Auto-detects local vs production environment.
  * Local  → XAMPP (localhost, root, no password)
- * Production → Hostinger (fill credentials below)
+ * Production → credentials loaded from env variables set in Hostinger
  */
 
 // ── Environment Detection ─────────────────────────────────────────────────
@@ -13,13 +13,13 @@ $isProduction = !in_array(strtolower(explode(':', $host)[0]), ['localhost', '127
 
 // ── Database Credentials ──────────────────────────────────────────────────
 if ($isProduction) {
-    // ▼▼ HOSTINGER — fill these in once, never touch again ▼▼
-    define('DB_HOST', 'localhost');                      // Hostinger always uses localhost
-    define('DB_USER', 'u463999436_classyfitters');        // Hostinger DB username
-    define('DB_PASS', 'Fitters@9911323!');     // ← Paste your password here
-    define('DB_NAME', 'u463999436_classyfitters');      // Hostinger DB name
+    // Credentials come from Hostinger environment variables — never hardcoded
+    define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
+    define('DB_USER', getenv('DB_USER') ?: '');
+    define('DB_PASS', getenv('DB_PASS') ?: '');
+    define('DB_NAME', getenv('DB_NAME') ?: '');
 } else {
-    // ▼▼ LOCAL (XAMPP) ▼▼
+    // LOCAL (XAMPP)
     define('DB_HOST', 'localhost');
     define('DB_USER', 'root');
     define('DB_PASS', '');
@@ -72,7 +72,6 @@ function getDbConnection() {
 
 // ── Auth Token Validator ──────────────────────────────────────────────────
 function validateAuthToken($pdo, $requiredRole = null) {
-    // Apache may strip HTTP_AUTHORIZATION — check all known locations
     $authHeader = $_SERVER['HTTP_AUTHORIZATION']
                ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION']
                ?? '';

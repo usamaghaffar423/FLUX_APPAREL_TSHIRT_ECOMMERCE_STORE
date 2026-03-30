@@ -5,10 +5,10 @@ import { motion } from 'framer-motion';
 import { Truck, Headset, ShieldCheck, Wallet, ArrowRight } from 'lucide-react';
 
 const FEATURES = [
-    { icon: <Truck size={24} />, title: "Free Shipping", desc: "Free Shipping On All Order" },
-    { icon: <Headset size={24} />, title: "Online Support", desc: "Contact us 24 hr, 7 days" },
-    { icon: <ShieldCheck size={24} />, title: "Money Guarantee", desc: "30 Day Money Back Guarantee" },
-    { icon: <Wallet size={24} />, title: "Secure Payment", desc: "We ensure secure payment" },
+    { icon: <Truck size={24} />, title: "Poore Pakistan Delivery", desc: "KPK se karachi tak ghar tak" },
+    { icon: <Headset size={24} />, title: "Online Support", desc: "7 din, subah se raat tak" },
+    { icon: <ShieldCheck size={24} />, title: "Easy Returns", desc: "7 din mein wapsi guaranteed" },
+    { icon: <Wallet size={24} />, title: "Secure Payment", desc: "100% safe & protected" },
 ];
 
 const Hero = () => {
@@ -26,26 +26,27 @@ const Hero = () => {
                         <div className="w-[3px] h-14 bg-[#EB3461] rounded-full mt-1"></div>
                         <div>
                             <p className="text-gray-600 text-[14px] font-medium leading-relaxed tracking-wide">
-                                Timeless Fashion for<br />the Modern Era
+                                KPK ka No.1 Fashion Store<br />Watches · Perfumes · Handbags · Clothes
                             </p>
                         </div>
                     </div>
 
                     <h1 className="text-5xl md:text-[88px] font-black text-[#1A1A1A] leading-[0.95] mb-8 tracking-tighter uppercase transition-all">
-                        MODERN<br />
-                        TRENDSETTER
+                        APKA STYLE,<br />
+                        <span className="text-[#EB3461]">APKI</span> PEHCHAAN
                     </h1>
 
                     <p className="text-gray-500 mb-10 text-[15px] md:text-base max-w-lg leading-relaxed font-medium">
-                        Get Street Style Savvy with our edgy and trendy clothing. Shop the latest streetwear and urban fashion.
+                        Wrist Watches, Perfumes, Ladies Handbags, Shorts aur Edenrobe Clothes — sab kuch ek jagah.
+                        Peshawar se Mardan tak, <strong className="text-gray-700">fast delivery guaranteed.</strong>
                     </p>
 
                     <div className="flex flex-wrap gap-8 items-center">
                         <Link to="/shop" className="text-[13px] font-bold uppercase tracking-[0.15em] text-gray-900 border-none pb-1 hover:text-[#EB3461] transition-all flex items-center group">
-                            <span>Explore More</span>
+                            <span>Sab Dekho</span>
                         </Link>
                         <Link to="/shop" className="bg-[#EB3461] hover:bg-black text-white px-10 py-4.5 rounded-full text-[13px] font-bold uppercase tracking-[0.15em] transition-all shadow-xl shadow-pink-100 active:scale-95 text-center">
-                            Shop Now
+                            Abhi Shop Karo
                         </Link>
                     </div>
                 </motion.div>
@@ -60,7 +61,7 @@ const Hero = () => {
                     <div className="relative z-10 w-full max-w-[850px]">
                         <img
                             src={IMAGES.hero}
-                            alt="Fashion Models"
+                            alt="Classyfitters – Wrist Watches, Perfumes, Ladies Handbags & Edenrobe Clothes KPK Pakistan"
                             className="w-full h-auto object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.1)]"
                         />
                     </div>

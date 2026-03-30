@@ -30,12 +30,12 @@ const PromoCards = () => {
         <section className="py-24 px-6 md:px-12 bg-white overflow-hidden">
             <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
 
-                {/* Left Card: Pink (Tall) */}
+                {/* Left Card: Pink (Tall) — Wrist Watches */}
                 <div className="lg:col-span-4">
                     <PromoCard
-                        title="Free-Spirited Fashion"
-                        desc="Get Street Style Savvy with our edgy and trendy clothing."
-                        img={IMAGES.hero_secondary} // Man in white shirt
+                        title="Wrist Watches"
+                        desc="Waqt dikhao, style mein! Premium watches at Pakistan best prices."
+                        img={IMAGES.hero_secondary}
                         bgColor="bg-[#BD3558]"
                         textColor="text-white"
                         btnColor="bg-white"
@@ -44,12 +44,12 @@ const PromoCards = () => {
                     />
                 </div>
 
-                {/* Middle Column: Two Small Cards (Blue & Black) */}
+                {/* Middle Column: Two Small Cards — Handbags & Perfumes */}
                 <div className="lg:col-span-4 flex flex-col gap-8">
                     <PromoCard
-                        title="Statement Pieces"
-                        desc="Get Street Style Savvy with our edgy and trendy clothing."
-                        img={IMAGES.category_blue} // Woman in black
+                        title="Ladies Handbags"
+                        desc="Har outfit ka perfect saathi — stylish bags for every occasion."
+                        img={IMAGES.category_blue}
                         bgColor="bg-[#5680BC]"
                         textColor="text-white"
                         btnColor="bg-white"
@@ -58,9 +58,9 @@ const PromoCards = () => {
                         imgClass="bottom-0 right-[-5%] w-[70%] h-[85%] object-contain object-bottom"
                     />
                     <PromoCard
-                        title="Statement Pieces"
-                        desc="Get Street Style Savvy with our edgy and trendy clothing."
-                        img={IMAGES.category_black} // Watch - Matches Step 411 Exactly
+                        title="Premium Perfumes"
+                        desc="Apni khushbu, apni pehchaan — branded fragrances online."
+                        img={IMAGES.category_black}
                         bgColor="bg-[#111111]"
                         textColor="text-white"
                         btnColor="bg-[#FCB92F]"
@@ -70,12 +70,12 @@ const PromoCards = () => {
                     />
                 </div>
 
-                {/* Right Card: Yellow (Tall) */}
+                {/* Right Card: Yellow (Tall) — Edenrobe / Ladies Shorts */}
                 <div className="lg:col-span-4">
                     <PromoCard
-                        title="Free-Spirited Fashion"
-                        desc="Get Street Style Savvy with our edgy and trendy clothing."
-                        img={IMAGES.promo_lady} // Woman in beige coat
+                        title="Edenrobe Clothes"
+                        desc="Ladies ke liye best kapde — Edenrobe original collection KPK."
+                        img={IMAGES.promo_lady}
                         bgColor="bg-[#F6BC3E]"
                         textColor="text-black"
                         btnColor="bg-black"

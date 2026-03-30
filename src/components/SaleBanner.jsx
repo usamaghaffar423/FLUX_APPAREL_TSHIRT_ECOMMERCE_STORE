@@ -39,7 +39,7 @@ const SaleBanner = () => {
                         <div className="absolute inset-0 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
                         <img
                             src={IMAGES.promo_lady}
-                            alt="Sale Promotion"
+                            alt="Classyfitters Sale – Ladies Fashion KPK Pakistan"
                             className="relative z-10 w-full h-full object-cover rounded-3xl"
                         />
                     </div>
@@ -47,8 +47,8 @@ const SaleBanner = () => {
 
                 <div className="md:w-1/2 text-white text-center md:text-left">
                     <h2 className="text-6xl font-black mb-6 leading-tight">
-                        FLAT 30% OFF<br />
-                        <span className="text-4xl font-light">LIMITED TIME OFFER!</span>
+                        FLAT 30%<br />CHHOOT!
+                        <br /><span className="text-4xl font-light">Sirf Aaj Tak Ka Mauqa!</span>
                     </h2>
 
                     <div className="flex gap-4 mb-10 justify-center md:justify-start">
@@ -61,14 +61,14 @@ const SaleBanner = () => {
                     </div>
 
                     <button className="bg-white text-pink-600 px-10 py-4 rounded-full font-bold uppercase tracking-widest hover:bg-gray-100 transition-all hover:scale-105 active:scale-95 shadow-xl">
-                        Shop Now
+                        Ab Shop Karo
                     </button>
                 </div>
             </div>
 
             {/* Background Text */}
             <div className="absolute top-1/2 left-0 -translate-y-1/2 text-[20vw] font-black text-white opacity-5 whitespace-nowrap pointer-events-none select-none">
-                BIG SALE 2026 EVENT
+                MEGA CHHOOT 2026
             </div>
         </section>
     );

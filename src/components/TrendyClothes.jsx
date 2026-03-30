@@ -53,14 +53,14 @@ const TrendyClothes = () => {
             <div className="max-w-7xl mx-auto">
                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
                     <div>
-                        <span className="text-[#EB3461] text-[10px] font-black uppercase tracking-[0.4em] mb-4 block">New Arrivals</span>
+                        <span className="text-[#EB3461] text-[10px] font-black uppercase tracking-[0.4em] mb-4 block">Hot Arrivals 🔥</span>
                         <h2 className="text-4xl md:text-5xl font-black text-gray-900 leading-[0.9] tracking-tighter uppercase">
-                            Trendy <br />
+                            Naye Dor Ki <br />
                             <span className="text-[#EB3461]">Collections</span>
                         </h2>
                     </div>
                     <Link to="/shop" className="group flex items-center gap-3 text-[11px] font-black uppercase tracking-widest text-gray-900 hover:text-[#EB3461] transition-all">
-                        View All Collections
+                        Sab Dekho
                         <div className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center group-hover:border-[#EB3461] group-hover:bg-[#EB3461] group-hover:text-white transition-all">
                             <ChevronRight size={16} />
                         </div>

@@ -58,13 +58,13 @@ const FeaturedCollection = () => {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
                     <div className="absolute bottom-12 left-12 right-12 z-10">
                         <h3 className="text-4xl font-bold text-white mb-4 leading-tight">
-                            Everyday Fashion For <br /> Effortless Style
+                            Aaj Ka Look,<br />Kal Ki Yaad
                         </h3>
                         <p className="text-gray-200 text-sm mb-8 max-w-sm leading-relaxed opacity-90">
-                            Step into Vintage Vogue for timeless fashion with a modern twist. Explore our curated collections of vintage-inspired clothing.
+                            Watches se Perfumes tak, Handbags se Edenrobe Clothes tak — Classyfitters mein milega sab kuch. KPK ka apna fashion store.
                         </p>
                         <Link to="/shop" className="inline-block bg-white text-black px-8 py-3 rounded-full text-[11px] font-black uppercase tracking-widest hover:bg-[#EB3461] hover:text-white transition-all">
-                            SHOP NOW
+                            ABHI DEKHO
                         </Link>
                     </div>
                 </div>

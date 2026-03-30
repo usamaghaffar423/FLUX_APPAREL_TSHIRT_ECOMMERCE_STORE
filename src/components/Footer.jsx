@@ -79,7 +79,7 @@ const Footer = () => {
             </div>
 
             <div className="max-w-7xl mx-auto pt-10 border-t border-white/5 text-center flex flex-col md:flex-row justify-between items-center text-gray-500 text-[10px] font-bold uppercase tracking-widest">
-                <p>Copyright © 2026 | classyfitters Brand - All Rights Reserved</p>
+                <p>Copyright © 2026 | Classyfitters — Pakistan's Premium Fashion Store</p>
                 <div className="flex space-x-8 mt-4 md:mt-0">
                     <Link to="/" className="hover:text-white transition-colors text-[#EB3461]">Privacy Policy</Link>
                     <Link to="/" className="hover:text-white transition-colors">Terms & Conditions</Link>

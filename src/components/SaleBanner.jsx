@@ -48,7 +48,7 @@ const SaleBanner = () => {
                 <div className="md:w-1/2 text-white text-center md:text-left">
                     <h2 className="text-6xl font-black mb-6 leading-tight">
                         FLAT 30%<br />OFF!
-                        <br /><span className="text-4xl font-light">Sirf Aaj Tak Ka Mauqa!</span>
+                        <br /><span className="text-4xl font-light">Sirf Aaj Tak Ka Mauqaa!</span>
                     </h2>
 
                     <div className="flex gap-4 mb-10 justify-center md:justify-start">

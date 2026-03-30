@@ -27,10 +27,12 @@ const CAT_DESC = {
 };
 
 const NAV_ITEMS = [
-    { label: 'Home',     href: '/' },
-    { label: 'Shop',     href: '/shop' },
-    { label: 'Contact',  href: '/contact' },
-    { label: 'Admin',    href: '/admin', adminOnly: true },
+    { label: 'Home',         href: '/'                                                       },
+    { label: 'Shop',         href: '/shop'                                                   },
+    { label: 'New Arrivals', href: '/shop?trending=1', badge: 'New',    badgeColor: 'bg-emerald-500' },
+    { label: 'Sale',         href: '/shop',            badge: '30% Off',badgeColor: 'bg-[#EB3461]'   },
+    { label: 'My Orders',    href: '/profile'                                                },
+    { label: 'Contact',      href: '/contact'                                                },
 ];
 
 const Header = () => {
@@ -77,7 +79,7 @@ const Header = () => {
         setIsMobileMenuOpen(false);
     }, [location.pathname]);
 
-    const visibleNavItems = NAV_ITEMS.filter(item => !item.adminOnly || isAdmin);
+    const visibleNavItems = NAV_ITEMS;
 
     const openCat  = () => { clearTimeout(catTimeoutRef.current); setIsCatOpen(true); };
     const closeCat = () => { catTimeoutRef.current = setTimeout(() => setIsCatOpen(false), 150); };
@@ -98,12 +100,12 @@ const Header = () => {
                             </a>
                         </div>
                         <p className="text-[11px] font-bold text-gray-600 hidden md:block">
-                            🇵🇰 Free Delivery on orders above Rs. 2,500 across Pakistan
+                            🇵🇰 KPK mein 3 din mein delivery · Rs. 2,500+ par free shipping poore Pakistan mein
                         </p>
                         <div className="flex items-center space-x-5">
                             <div className="flex items-center space-x-1.5">
                                 <Mail size={13} />
-                                <span>info@classyfitters.com</span>
+                                <span>info@classyfitters.shop</span>
                             </div>
                             <div className="flex items-center space-x-1.5">
                                 <Phone size={13} />
@@ -139,14 +141,19 @@ const Header = () => {
                         </Link>
 
                         {/* ── Desktop Nav ─────────────────────────── */}
-                        <nav className="hidden lg:flex items-center space-x-8 flex-1 justify-center">
+                        <nav className="hidden lg:flex items-center space-x-7 flex-1 justify-center">
                             {visibleNavItems.map((item) => (
                                 <Link
                                     key={item.label}
                                     to={item.href}
-                                    className="relative font-bold text-[13px] uppercase tracking-wider text-gray-800 hover:text-[#EB3461] transition-colors group"
+                                    className="relative font-bold text-[12px] uppercase tracking-wider text-gray-800 hover:text-[#EB3461] transition-colors group"
                                 >
                                     {item.label}
+                                    {item.badge && (
+                                        <span className={`absolute -top-3 -right-6 ${item.badgeColor} text-white text-[7px] font-black uppercase tracking-wide px-1.5 py-0.5 rounded-full leading-none`}>
+                                            {item.badge}
+                                        </span>
+                                    )}
                                     <span className="absolute bottom-[-4px] left-0 h-[2px] w-0 bg-[#EB3461] transition-all duration-300 origin-left group-hover:w-full" />
                                 </Link>
                             ))}
@@ -223,14 +230,14 @@ const Header = () => {
                                             {/* Bottom promo strip */}
                                             <div className="mx-6 mb-6 bg-gradient-to-r from-[#EB3461] to-rose-600 rounded-2xl p-4 flex items-center justify-between">
                                                 <div>
-                                                    <p className="text-white text-[10px] font-black uppercase tracking-widest">New Arrivals</p>
-                                                    <p className="text-white/80 text-[11px] font-medium mt-0.5">Fresh styles added weekly</p>
+                                                    <p className="text-white text-[10px] font-black uppercase tracking-widest">🔥 Hot Arrivals</p>
+                                                    <p className="text-white/80 text-[11px] font-medium mt-0.5">Har hafte naye styles — don't miss out!</p>
                                                 </div>
                                                 <Link
-                                                    to="/shop"
+                                                    to="/shop?trending=1"
                                                     className="bg-white text-[#EB3461] px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest hover:bg-gray-900 hover:text-white transition-all"
                                                 >
-                                                    Shop Now
+                                                    Dekho Abhi
                                                 </Link>
                                             </div>
                                         </motion.div>
@@ -334,8 +341,15 @@ const Header = () => {
                                                 className="group flex items-center justify-between px-4 py-3.5 rounded-2xl hover:bg-gray-50 transition-all"
                                                 onClick={() => setIsMobileMenuOpen(false)}
                                             >
-                                                <span className="text-[15px] font-black text-gray-900 group-hover:text-[#EB3461] uppercase tracking-wide transition-colors">
-                                                    {item.label}
+                                                <span className="flex items-center gap-2.5">
+                                                    <span className="text-[15px] font-black text-gray-900 group-hover:text-[#EB3461] uppercase tracking-wide transition-colors">
+                                                        {item.label}
+                                                    </span>
+                                                    {item.badge && (
+                                                        <span className={`${item.badgeColor} text-white text-[7px] font-black uppercase tracking-wide px-1.5 py-0.5 rounded-full leading-none`}>
+                                                            {item.badge}
+                                                        </span>
+                                                    )}
                                                 </span>
                                                 <ArrowRight size={16} className="text-gray-300 group-hover:text-[#EB3461] group-hover:translate-x-1 transition-all" />
                                             </Link>
@@ -398,7 +412,7 @@ const Header = () => {
                                         className="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl bg-gray-50 hover:bg-gray-100 transition-all text-gray-500"
                                     >
                                         <Search size={18} />
-                                        <span className="text-[13px] font-bold text-gray-500 uppercase tracking-widest">Search Products</span>
+                                        <span className="text-[13px] font-bold text-gray-500 uppercase tracking-widest">Products Dhundho</span>
                                     </button>
                                 </div>
                             </div>

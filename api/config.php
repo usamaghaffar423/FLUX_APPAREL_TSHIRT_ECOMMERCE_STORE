@@ -15,9 +15,9 @@ $isProduction = !in_array(strtolower(explode(':', $host)[0]), ['localhost', '127
 if ($isProduction) {
     // ▼▼ HOSTINGER — fill these in once, never touch again ▼▼
     define('DB_HOST', 'localhost');                      // Hostinger always uses localhost
-    define('DB_USER', 'u463999436_classifitter');        // Hostinger DB username
-    define('DB_PASS', 'YOUR_HOSTINGER_DB_PASSWORD');     // ← Paste your password here
-    define('DB_NAME', 'u463999436_classifitter_d');      // Hostinger DB name
+    define('DB_USER', 'u463999436_classyfitters');        // Hostinger DB username
+    define('DB_PASS', 'Fitters@9911323!');     // ← Paste your password here
+    define('DB_NAME', 'u463999436_classyfitters');      // Hostinger DB name
 } else {
     // ▼▼ LOCAL (XAMPP) ▼▼
     define('DB_HOST', 'localhost');
@@ -31,8 +31,8 @@ $allowedOrigins = [
     'http://localhost:5173',
     'http://localhost:3000',
     'http://localhost',
-    'https://classyfitters.com',
-    'https://www.classyfitters.com',
+    'https://classyfitters.shop',
+    'https://www.classyfitters.shop',
 ];
 
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';

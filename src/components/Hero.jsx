@@ -1,58 +1,97 @@
 import React from 'react';
 import { IMAGES } from '../constants';
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { Truck, Headset, ShieldCheck, Wallet, ArrowRight } from 'lucide-react';
+
+const FEATURES = [
+    { icon: <Truck size={24} />, title: "Free Shipping", desc: "Free Shipping On All Order" },
+    { icon: <Headset size={24} />, title: "Online Support", desc: "Contact us 24 hr, 7 days" },
+    { icon: <ShieldCheck size={24} />, title: "Money Guarantee", desc: "30 Day Money Back Guarantee" },
+    { icon: <Wallet size={24} />, title: "Secure Payment", desc: "We ensure secure payment" },
+];
 
 const Hero = () => {
     return (
-        <section className="relative overflow-hidden bg-white min-h-[850px] flex items-center">
-            {/* Background Shapes */}
-            <div className="absolute top-0 right-0 w-[60%] h-full overflow-hidden z-0 pointer-events-none">
-                <div className="absolute inset-0 border-l-[1px] border-gray-100 transform -skew-x-[25deg] translate-x-1/2"></div>
-                <div className="absolute inset-0 border-l-[100px] border-gray-50 transform -skew-x-[25deg] translate-x-[60%]"></div>
-            </div>
-
-            <div className="max-w-7xl mx-auto px-6 md:px-12 grid md:grid-cols-2 items-center relative z-10 w-full">
-                <div className="max-w-xl">
-                    <div className="flex items-center space-x-4 mb-8">
-                        <div className="w-1 h-12 bg-[#EB3461]"></div>
+        <section className="relative bg-white">
+            <div className="max-w-7xl mx-auto px-6 md:px-12 pt-12 pb-24 grid lg:grid-cols-2 gap-8 items-center relative z-10 w-full">
+                {/* Text Content */}
+                <motion.div
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.8 }}
+                    className="max-w-xl"
+                >
+                    <div className="flex items-start space-x-4 mb-8">
+                        <div className="w-[3px] h-14 bg-[#EB3461] rounded-full mt-1"></div>
                         <div>
-                            <p className="text-gray-600 text-[13px] font-medium leading-tight">Timeless Fashion for</p>
-                            <p className="text-gray-600 text-[13px] font-medium leading-tight">the Modern Era</p>
+                            <p className="text-gray-600 text-[14px] font-medium leading-relaxed tracking-wide">
+                                Timeless Fashion for<br />the Modern Era
+                            </p>
                         </div>
                     </div>
 
-                    <h1 className="text-[85px] font-black text-[#1A1A1A] leading-[0.9] mb-8 tracking-tighter">
+                    <h1 className="text-5xl md:text-[88px] font-black text-[#1A1A1A] leading-[0.95] mb-8 tracking-tighter uppercase transition-all">
                         MODERN<br />
                         TRENDSETTER
                     </h1>
 
-                    <p className="text-gray-500 mb-10 text-lg max-w-md leading-relaxed">
+                    <p className="text-gray-500 mb-10 text-[15px] md:text-base max-w-lg leading-relaxed font-medium">
                         Get Street Style Savvy with our edgy and trendy clothing. Shop the latest streetwear and urban fashion.
                     </p>
 
-                    <div className="flex gap-8 items-center">
-                        <button className="text-[13px] font-bold uppercase tracking-widest text-gray-900 border-b-2 border-black pb-1 hover:text-[#EB3461] hover:border-[#EB3461] transition-all">
-                            More Explore
-                        </button>
-                        <button className="bg-[#EB3461] hover:bg-black text-white px-10 py-4 rounded-full text-[13px] font-bold uppercase tracking-widest transition-all hover:scale-105 active:scale-95 shadow-xl shadow-pink-100">
+                    <div className="flex flex-wrap gap-8 items-center">
+                        <Link to="/shop" className="text-[13px] font-bold uppercase tracking-[0.15em] text-gray-900 border-none pb-1 hover:text-[#EB3461] transition-all flex items-center group">
+                            <span>Explore More</span>
+                        </Link>
+                        <Link to="/shop" className="bg-[#EB3461] hover:bg-black text-white px-10 py-4.5 rounded-full text-[13px] font-bold uppercase tracking-[0.15em] transition-all shadow-xl shadow-pink-100 active:scale-95 text-center">
                             Shop Now
-                        </button>
+                        </Link>
                     </div>
-                </div>
+                </motion.div>
 
-                <div className="relative h-[850px] hidden md:block">
-                    {/* Models Container */}
-                    <div className="absolute bottom-[-50px] right-0 flex items-end">
+                {/* Single Combined Image Composition */}
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                    className="relative flex items-center justify-center lg:justify-end"
+                >
+                    <div className="relative z-10 w-full max-w-[850px]">
                         <img
                             src={IMAGES.hero}
-                            alt="Fashion Model 1"
-                            className="w-[600px] h-auto object-contain z-10 -mr-48 drop-shadow-2xl mix-blend-multiply"
-                        />
-                        <img
-                            src={IMAGES.hero_secondary}
-                            alt="Fashion Model 2"
-                            className="w-[700px] h-auto object-contain z-0 drop-shadow-xl saturate-[1.1]"
+                            alt="Fashion Models"
+                            className="w-full h-auto object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.1)]"
                         />
                     </div>
+                </motion.div>
+            </div>
+
+            {/* Features Bar - Refined for brand consistency and responsiveness */}
+            <div className="bg-[#fcfcfc] border-y border-gray-100 py-12 px-6 md:px-12">
+                <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-8">
+                    {FEATURES.map((item, idx) => (
+                        <motion.div
+                            key={idx}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ delay: idx * 0.1, duration: 0.5 }}
+                            viewport={{ once: true }}
+                            className="flex items-center space-x-5 group cursor-default"
+                        >
+                            <div className="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center text-gray-400 group-hover:text-[#EB3461] transition-all duration-500 group-hover:scale-110 group-hover:shadow-md border border-gray-50">
+                                {item.icon}
+                            </div>
+                            <div>
+                                <h4 className="text-[14px] md:text-[15px] font-black uppercase tracking-wider text-gray-900 leading-tight">
+                                    {item.title}
+                                </h4>
+                                <p className="text-[11px] md:text-[12px] text-gray-400 font-bold uppercase tracking-widest mt-1.5 opacity-80">
+                                    {item.desc}
+                                </p>
+                            </div>
+                        </motion.div>
+                    ))}
                 </div>
             </div>
         </section>

@@ -1,77 +1,88 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { IMAGES } from '../constants';
+import { Link } from 'react-router-dom';
 
-const PromoCard = ({ title, desc, img, bgColor, textColor, btnColor, btnTextColor, size = 'large', imgClass }) => (
-    <div className={`relative ${bgColor} rounded-[40px] overflow-hidden ${size === 'large' ? 'h-[600px]' : 'h-[286px]'} p-10 flex flex-col group`}>
+const PromoCard = ({ title, desc, img, bgColor, textColor, btnColor, btnTextColor, isSmall = false, imgClass }) => (
+    <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className={`relative ${bgColor} rounded-[32px] overflow-hidden ${isSmall ? 'h-[285px]' : 'h-[600px]'} p-8 md:p-10 flex flex-col group transition-all duration-500 hover:shadow-2xl hover:shadow-black/10`}
+    >
         <div className={`z-10 ${textColor} relative`}>
-            <h3 className="text-2xl font-bold mb-3 tracking-tight leading-tight">{title}</h3>
-            <p className="text-[13px] opacity-90 leading-relaxed mb-8 max-w-[200px]">{desc}</p>
-            <button className={`${btnColor} ${btnTextColor} px-8 py-3 rounded-full text-[11px] font-bold uppercase tracking-widest hover:scale-105 transition-transform`}>
+            <h3 className="text-2xl md:text-3xl font-bold mb-3 tracking-tight leading-tight">{title}</h3>
+            <p className="text-[13px] font-medium opacity-80 leading-relaxed mb-8 max-w-[220px]">{desc}</p>
+            <Link to="/shop" className={`${btnColor} ${btnTextColor} px-8 py-3.5 rounded-full text-[11px] font-bold uppercase tracking-widest hover:scale-110 active:scale-95 transition-all duration-300 shadow-lg shadow-black/5`}>
                 SHOP NOW
-            </button>
+            </Link>
         </div>
         <img
             src={img}
             alt={title}
-            className={`absolute pointer-events-none transition-transform duration-700 group-hover:scale-110 ${imgClass}`}
+            className={`absolute pointer-events-none transition-all duration-1000 ease-out group-hover:scale-110 ${imgClass}`}
         />
-    </div>
+    </motion.div>
 );
 
 const PromoCards = () => {
     return (
-        <section className="py-24 px-6 md:px-12 bg-white">
-            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+        <section className="py-24 px-6 md:px-12 bg-white overflow-hidden">
+            <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
 
-                {/* Red Card */}
-                <PromoCard
-                    title="Free-Spirited Fashion"
-                    desc="Get Street Style Savvy with our edgy and trendy clothing."
-                    img="https://images.unsplash.com/photo-1617137968427-85924c800a22?auto=format&fit=crop&q=80&w=800"
-                    bgColor="bg-[#D13A59]"
-                    textColor="text-white"
-                    btnColor="bg-white"
-                    btnTextColor="text-[#D13A59]"
-                    imgClass="bottom-0 right-[-15%] w-[100%] h-[80%] object-contain object-bottom"
-                />
-
-                {/* Middle Column */}
-                <div className="flex flex-col gap-7 h-[600px]">
+                {/* Left Card: Pink (Tall) */}
+                <div className="lg:col-span-4">
                     <PromoCard
-                        title="Statement Pieces"
+                        title="Free-Spirited Fashion"
                         desc="Get Street Style Savvy with our edgy and trendy clothing."
-                        img={IMAGES.category_blue}
-                        bgColor="bg-[#3D78B9]"
+                        img={IMAGES.hero_secondary} // Man in white shirt
+                        bgColor="bg-[#BD3558]"
                         textColor="text-white"
                         btnColor="bg-white"
-                        btnTextColor="text-[#3D78B9]"
-                        size="small"
-                        imgClass="bottom-4 right-[-10px] w-[55%] h-auto object-contain rotate-[-15deg] group-hover:rotate-0"
-                    />
-                    <PromoCard
-                        title="Statement Pieces"
-                        desc="Get Street Style Savvy with our edgy and trendy clothing."
-                        img={IMAGES.category_black}
-                        bgColor="bg-[#141414]"
-                        textColor="text-white"
-                        btnColor="bg-[#F9B22D]"
-                        btnTextColor="text-black"
-                        size="small"
-                        imgClass="bottom-4 right-4 w-1/2 h-auto object-contain"
+                        btnTextColor="text-[#BD3558]"
+                        imgClass="bottom-0 right-[-10%] w-[100%] h-[75%] object-contain object-bottom"
                     />
                 </div>
 
-                {/* Yellow Card */}
-                <PromoCard
-                    title="Free-Spirited Fashion"
-                    desc="Get Street Style Savvy with our edgy and trendy clothing."
-                    img="https://images.unsplash.com/photo-1529139581774-823b52c04b5b?auto=format&fit=crop&q=80&w=800"
-                    bgColor="bg-[#F9B22D]"
-                    textColor="text-black"
-                    btnColor="bg-[#141414]"
-                    btnTextColor="text-white"
-                    imgClass="bottom-0 right-[-15%] w-[100%] h-[75%] object-contain object-bottom"
-                />
+                {/* Middle Column: Two Small Cards (Blue & Black) */}
+                <div className="lg:col-span-4 flex flex-col gap-8">
+                    <PromoCard
+                        title="Statement Pieces"
+                        desc="Get Street Style Savvy with our edgy and trendy clothing."
+                        img={IMAGES.category_blue} // Woman in black
+                        bgColor="bg-[#5680BC]"
+                        textColor="text-white"
+                        btnColor="bg-white"
+                        btnTextColor="text-[#5680BC]"
+                        isSmall={true}
+                        imgClass="bottom-0 right-[-5%] w-[70%] h-[85%] object-contain object-bottom"
+                    />
+                    <PromoCard
+                        title="Statement Pieces"
+                        desc="Get Street Style Savvy with our edgy and trendy clothing."
+                        img={IMAGES.category_black} // Watch - Matches Step 411 Exactly
+                        bgColor="bg-[#111111]"
+                        textColor="text-white"
+                        btnColor="bg-[#FCB92F]"
+                        btnTextColor="text-black"
+                        isSmall={true}
+                        imgClass="bottom-4 right-4 w-[50%] h-auto object-contain"
+                    />
+                </div>
+
+                {/* Right Card: Yellow (Tall) */}
+                <div className="lg:col-span-4">
+                    <PromoCard
+                        title="Free-Spirited Fashion"
+                        desc="Get Street Style Savvy with our edgy and trendy clothing."
+                        img={IMAGES.promo_lady} // Woman in beige coat
+                        bgColor="bg-[#F6BC3E]"
+                        textColor="text-black"
+                        btnColor="bg-black"
+                        btnTextColor="text-white"
+                        imgClass="bottom-0 right-[-15%] w-[110%] h-[95%] object-contain object-bottom"
+                    />
+                </div>
 
             </div>
         </section>

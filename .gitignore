@@ -22,3 +22,14 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Deployment zips
+*.zip
+deploy_stage/
+
+# Local DB dump — never commit credentials
+*.sql
+
+# Uploaded product images — live on server, not in git
+images/products/*
+!images/products/.gitkeep

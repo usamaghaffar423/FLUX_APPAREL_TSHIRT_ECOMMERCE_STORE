@@ -2,9 +2,21 @@
 
 :root {
   font-family: 'Outfit', sans-serif;
+  scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

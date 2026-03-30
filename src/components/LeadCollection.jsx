@@ -1,8 +1,25 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Send, CheckCircle } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Send, CheckCircle, Loader2 } from 'lucide-react';
 
 const LeadCollection = () => {
+    const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
+    const [status, setStatus] = useState('idle'); // idle, loading, success
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setStatus('loading');
+        // Simulate API call
+        setTimeout(() => {
+            setStatus('success');
+            setEmail('');
+            setName('');
+            // Reset status after 5 seconds
+            setTimeout(() => setStatus('idle'), 5000);
+        }, 1500);
+    };
+
     return (
         <section className="py-24 px-6 md:px-12 bg-[#F9F9F9]">
             <div className="max-w-6xl mx-auto">
@@ -21,22 +38,32 @@ const LeadCollection = () => {
                             </p>
                         </div>
 
-                        <form className="space-y-4 max-w-md" onSubmit={(e) => e.preventDefault()}>
+                        <form className="space-y-4 max-w-md" onSubmit={handleSubmit}>
                             <div className="flex flex-col md:flex-row gap-4">
                                 <input
+                                    required
                                     type="text"
                                     placeholder="Your Name"
-                                    className="flex-1 bg-gray-50 border-none rounded-2xl px-6 py-4 text-sm focus:ring-2 focus:ring-pink-100 outline-none transition-all font-medium"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    className="flex-1 bg-gray-50 border-none rounded-2xl px-6 py-4 text-sm focus:ring-2 focus:ring-[#EB3461]/20 outline-none transition-all font-medium"
                                 />
                                 <input
+                                    required
                                     type="email"
                                     placeholder="Email Address"
-                                    className="flex-1 bg-gray-50 border-none rounded-2xl px-6 py-4 text-sm focus:ring-2 focus:ring-pink-100 outline-none transition-all font-medium"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className="flex-1 bg-gray-50 border-none rounded-2xl px-6 py-4 text-sm focus:ring-2 focus:ring-[#EB3461]/20 outline-none transition-all font-medium"
                                 />
                             </div>
-                            <button className="w-full bg-[#EB3461] text-white rounded-2xl py-5 px-8 flex items-center justify-center gap-3 font-black uppercase text-xs tracking-widest hover:bg-black transition-all shadow-xl shadow-pink-100 hover:-translate-y-1 active:translate-y-0">
-                                Get Early Access
-                                <Send size={16} />
+                            <button
+                                disabled={status !== 'idle'}
+                                className="w-full bg-[#EB3461] disabled:bg-gray-400 text-white rounded-2xl py-5 px-8 flex items-center justify-center gap-3 font-black uppercase text-xs tracking-widest hover:bg-black transition-all shadow-xl shadow-pink-100 hover:-translate-y-1 active:translate-y-0"
+                            >
+                                {status === 'idle' && <>Get Early Access <Send size={16} /></>}
+                                {status === 'loading' && <Loader2 size={20} className="animate-spin" />}
+                                {status === 'success' && <div className="flex items-center gap-2"><CheckCircle size={18} /> Welcome to the Circle!</div>}
                             </button>
                         </form>
 

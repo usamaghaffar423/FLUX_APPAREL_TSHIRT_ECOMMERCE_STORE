@@ -1,0 +1,13 @@
+RewriteEngine On
+
+# Pass Authorization header through to PHP (Apache/XAMPP strips it by default)
+RewriteRule ^ - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# Handle client-side routing
+RewriteBase /
+RewriteRule ^index\.html$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.html [L]
+
+# API routing (if needed, but since API is in /api, it should work)

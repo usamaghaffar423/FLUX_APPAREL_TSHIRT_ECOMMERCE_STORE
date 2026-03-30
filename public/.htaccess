@@ -1,0 +1,20 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Pass Authorization header through to PHP (Hostinger strips it otherwise)
+  RewriteRule ^ - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+  # Don't rewrite actual files, directories, or /api/ calls
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-l
+  RewriteCond %{REQUEST_URI} !^/api/
+  RewriteRule . /index.html [L]
+</IfModule>
+
+# Protect sensitive PHP config files
+<FilesMatch "^(config\.php|setup_db\.php|\.env)$">
+  Require all denied
+</FilesMatch>

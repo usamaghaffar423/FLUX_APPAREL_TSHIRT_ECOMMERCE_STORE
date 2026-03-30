@@ -1,0 +1,9 @@
+RewriteEngine On
+
+# Pass Authorization header through to PHP for all request methods
+RewriteRule ^ - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# Allow DELETE and PUT methods
+<LimitExcept GET POST DELETE PUT OPTIONS>
+    Require all denied
+</LimitExcept>

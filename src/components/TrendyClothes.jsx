@@ -1,67 +1,112 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { ChevronRight } from 'lucide-react';
+import { API_BASE_URL } from '../config';
+import { useCart } from '../context/CartContext';
 import { IMAGES } from '../constants';
-import { ShoppingCart, Heart } from 'lucide-react';
-
-const trendyProducts = [
-    { id: 101, name: "Canvas Backpack", price: "$49", img: IMAGES.category_blue, cat: "Bags" },
-    { id: 102, name: "Floral Summer Top", price: "$25", img: IMAGES.product_3, cat: "Women" },
-    { id: 103, name: "Navy Polo Shirt", price: "$32", img: IMAGES.product_2, cat: "Men" },
-    { id: 104, name: "Classic Grey Cap", price: "$18", img: IMAGES.product_4, cat: "Accessory" },
-];
+import ProductCard from './ProductCard';
 
 const TrendyClothes = () => {
+    const { addToCart } = useCart();
+    const [products, setProducts] = useState([]);
+    const [featuredProduct, setFeaturedProduct] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [wishlisted, setWishlisted] = useState({});
+
+    useEffect(() => {
+        const fetchTrending = async () => {
+            try {
+                const response = await fetch(`${API_BASE_URL}/get_products.php?trending=1&limit=5`);
+                if (!response.ok) throw new Error('Failed');
+                const data = await response.json();
+                if (Array.isArray(data) && data.length > 0) {
+                    setFeaturedProduct(data[0]);
+                    setProducts(data.slice(1, 5)); // up to 4 grid cards
+                }
+            } catch (err) {
+                console.error('TrendyClothes fetch error:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchTrending();
+    }, []);
+
+    const toggleWishlist = (id) => {
+        setWishlisted(prev => ({ ...prev, [id]: !prev[id] }));
+    };
+
+    // Skeleton grid card
+    const SkeletonCard = () => (
+        <div className="bg-gray-50 rounded-3xl p-6 flex flex-col animate-pulse">
+            <div className="aspect-square bg-gray-200 rounded-2xl mb-4" />
+            <div className="space-y-2">
+                <div className="h-2.5 bg-gray-200 rounded w-1/3" />
+                <div className="h-4 bg-gray-200 rounded w-3/4" />
+                <div className="h-3.5 bg-gray-200 rounded w-1/4" />
+            </div>
+        </div>
+    );
+
     return (
-        <section className="py-20 px-6 md:px-12 bg-white">
+        <section className="py-24 px-6 md:px-12 bg-gray-50/30">
             <div className="max-w-7xl mx-auto">
-                <div className="text-center mb-16">
-                    <h2 className="text-4xl font-bold text-gray-900 mb-4 tracking-tight">Trendy Clothes</h2>
-                    <p className="text-gray-500">Stay ahead of the curve with our latest arrivals</p>
+                <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+                    <div>
+                        <span className="text-[#EB3461] text-[10px] font-black uppercase tracking-[0.4em] mb-4 block">New Arrivals</span>
+                        <h2 className="text-4xl md:text-5xl font-black text-gray-900 leading-[0.9] tracking-tighter uppercase">
+                            Trendy <br />
+                            <span className="text-[#EB3461]">Collections</span>
+                        </h2>
+                    </div>
+                    <Link to="/shop" className="group flex items-center gap-3 text-[11px] font-black uppercase tracking-widest text-gray-900 hover:text-[#EB3461] transition-all">
+                        View All Collections
+                        <div className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center group-hover:border-[#EB3461] group-hover:bg-[#EB3461] group-hover:text-white transition-all">
+                            <ChevronRight size={16} />
+                        </div>
+                    </Link>
                 </div>
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {/* Featured Large Card */}
-                    <div className="relative rounded-[40px] overflow-hidden group h-[600px] lg:col-span-1 shadow-2xl">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    {/* Featured Large Card - Now part of the flow but still prominent */}
+                    <div className="md:col-span-2 lg:col-span-2 relative rounded-[40px] overflow-hidden group min-h-[450px] shadow-2xl">
                         <img
-                            src={IMAGES.hero}
-                            alt="Trendy Feature"
-                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                            src={featuredProduct?.image_url || IMAGES.hero}
+                            alt={featuredProduct?.title || 'Trendy Feature'}
+                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                            onError={(e) => { e.target.onerror = null; e.target.src = IMAGES.hero; }}
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                        <div className="absolute bottom-10 left-10 text-white z-10">
-                            <h3 className="text-3xl font-bold mb-4">Everyday Fashion For Effortless Style</h3>
-                            <button className="bg-white text-black px-8 py-3 rounded-full text-sm font-bold uppercase tracking-widest hover:bg-pink-500 hover:text-white transition-all">
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+                        <div className="absolute bottom-10 left-10 right-10 z-10">
+                            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/60 mb-3">
+                                {featuredProduct?.category || 'Trending'}
+                            </p>
+                            <h3 className="text-3xl font-black text-white mb-6 leading-tight uppercase tracking-tighter">
+                                {featuredProduct?.title || 'Everyday Fashion For Effortless Style'}
+                            </h3>
+                            <Link
+                                to="/shop"
+                                className="inline-block bg-[#EB3461] text-white px-10 py-4 rounded-full text-[11px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all shadow-xl shadow-pink-900/20"
+                            >
                                 Shop Now
-                            </button>
+                            </Link>
                         </div>
                     </div>
 
-                    {/* Right Grid */}
-                    <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        {trendyProducts.map((p) => (
-                            <div key={p.id} className="bg-gray-50 rounded-3xl p-6 flex flex-col group hover:shadow-lg transition-shadow">
-                                <div className="relative aspect-square overflow-hidden rounded-2xl mb-4 bg-white">
-                                    <img
-                                        src={p.img}
-                                        alt={p.name}
-                                        className="w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-500"
-                                    />
-                                    <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
-                                        <button className="bg-white p-3 rounded-full shadow-lg hover:bg-black hover:text-white transition-all transform translate-y-4 group-hover:translate-y-0 duration-300">
-                                            <Heart size={20} />
-                                        </button>
-                                        <button className="bg-white p-3 rounded-full shadow-lg hover:bg-black hover:text-white transition-all transform translate-y-4 group-hover:translate-y-0 duration-500">
-                                            <ShoppingCart size={20} />
-                                        </button>
-                                    </div>
-                                </div>
-                                <div>
-                                    <p className="text-[10px] uppercase font-bold tracking-widest text-[#EB3461] mb-1">{p.cat}</p>
-                                    <h4 className="font-bold text-gray-800 mb-1 group-hover:text-pink-500 transition-colors uppercase">{p.name}</h4>
-                                    <p className="text-gray-400 font-medium">{p.price}.00</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                    {/* Compact Product Cards */}
+                    {loading
+                        ? [...Array(2)].map((_, i) => <SkeletonCard key={i} />)
+                        : products.slice(0, 2).map((p) => (
+                            <ProductCard key={p.id} product={p} />
+                        ))
+                    }
+
+                    {/* Remaining Products if any on next row or LG grid */}
+                    {products.slice(2, 4).map((p) => (
+                        <div key={p.id} className="lg:col-span-1">
+                            <ProductCard product={p} />
+                        </div>
+                    ))}
                 </div>
             </div>
         </section>

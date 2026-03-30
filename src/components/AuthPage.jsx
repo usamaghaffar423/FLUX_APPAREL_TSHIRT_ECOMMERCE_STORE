@@ -84,18 +84,6 @@ const LoginForm = ({ onSwitch }) => {
                 <button onClick={onSwitch} className="text-[#EB3461] font-black hover:underline">Create account</button>
             </p>
 
-            {/* Admin hint */}
-            <div className="mt-6 border border-dashed border-gray-200 rounded-2xl p-4 bg-gray-50">
-                <div className="flex items-center gap-2 mb-2">
-                    <ShieldCheck size={14} className="text-[#EB3461]" />
-                    <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">Admin Access</span>
-                </div>
-                <p className="text-[11px] text-gray-500 font-semibold">
-                    Username: <span className="font-black text-gray-700">admin</span>
-                    &nbsp;&nbsp;·&nbsp;&nbsp;
-                    Password: <span className="font-black text-gray-700">admin123</span>
-                </p>
-            </div>
         </motion.div>
     );
 };

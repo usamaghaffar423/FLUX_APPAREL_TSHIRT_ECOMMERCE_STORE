@@ -46,10 +46,11 @@ const Footer = () => {
                     <h4 className="font-bold text-lg mb-8 uppercase tracking-widest text-[#EB3461]">Quick Links</h4>
                     <ul className="space-y-4 text-gray-400 text-sm">
                         {[
-                            { label: 'Shop Home', href: '/' },
+                            { label: 'Shop Home',       href: '/' },
                             { label: 'Browse Products', href: '/shop' },
-                            { label: 'All Categories', href: '/category' },
-                            { label: 'Admin Panel', href: '/admin' }
+                            { label: 'All Categories',  href: '/category' },
+                            { label: 'Contact Us',       href: '/contact' },
+                            { label: 'My Orders',        href: '/profile' },
                         ].map((link) => (
                             <li key={link.label}>
                                 <Link to={link.href} className="hover:text-white transition-colors">{link.label}</Link>
@@ -79,9 +80,19 @@ const Footer = () => {
                 <div>
                     <h4 className="font-bold text-lg mb-8 uppercase tracking-widest text-[#EB3461]">Contact Info</h4>
                     <div className="space-y-4 text-gray-400 text-sm">
-                        <p>Batkhela, Malakand, Pakistan</p>
-                        <p>+92 345 6789100</p>
-                        <p className="hover:text-white cursor-pointer transition-colors">support@classyfitters.com</p>
+                        <div className="flex items-start gap-2">
+                            <span className="mt-0.5 shrink-0">📍</span>
+                            <p>Main GT Road Amandara,<br />Near Popular CNG, KPK, Pakistan</p>
+                        </div>
+                        <a href="tel:+923481099433" className="flex items-center gap-2 hover:text-white transition-colors">
+                            <span>📞</span> +92 348 1099433
+                        </a>
+                        <a href="https://wa.me/923481099433" target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:text-white transition-colors">
+                            <span>💬</span> WhatsApp Us
+                        </a>
+                        <a href="mailto:support@classyfitters.shop" className="flex items-center gap-2 hover:text-white transition-colors">
+                            <span>✉️</span> support@classyfitters.shop
+                        </a>
                     </div>
                 </div>
             </div>

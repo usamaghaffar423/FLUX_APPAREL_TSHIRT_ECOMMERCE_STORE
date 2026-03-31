@@ -7,23 +7,23 @@ const INFO_ITEMS = [
     {
         icon: Mail,
         title: 'Email Us',
-        detail: 'info@classyfitters.com',
+        detail: 'support@classyfitters.shop',
         sub: 'We reply within 24 hours',
-        href: 'mailto:info@classyfitters.com',
+        href: 'mailto:support@classyfitters.shop',
     },
     {
         icon: Phone,
-        title: 'Call Us',
-        detail: '+92 345 6789100',
-        sub: 'Mon–Sat, 9 AM – 6 PM PKT',
-        href: 'tel:+923456789100',
+        title: 'Call / WhatsApp',
+        detail: '+92 348 1099433',
+        sub: 'Mon–Sat, 9 AM – 9 PM PKT',
+        href: 'tel:+923481099433',
     },
     {
         icon: MapPin,
         title: 'Visit Us',
-        detail: 'Batkhela, Malakand',
-        sub: 'Khyber Pakhtunkhwa, Pakistan',
-        href: '#',
+        detail: 'Main GT Road Amandara',
+        sub: 'Near Popular CNG, KPK, Pakistan',
+        href: 'https://maps.google.com/?q=Amandara+GT+Road+KPK+Pakistan',
     },
 ];
 
@@ -168,7 +168,7 @@ const ContactPage = () => {
                                         <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Phone Number</label>
                                         <input
                                             name="phone" type="tel" value={form.phone} onChange={handleChange}
-                                            placeholder="+92 345 6789100"
+                                            placeholder="+92 348 1099433"
                                             className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-4 text-sm font-medium text-gray-900 placeholder:text-gray-300 focus:outline-none focus:border-[#EB3461] focus:bg-white transition-all"
                                         />
                                     </div>
@@ -204,8 +204,8 @@ const ContactPage = () => {
                         {/* Google Map embed */}
                         <div className="rounded-[40px] overflow-hidden border border-gray-100 shadow-xl shadow-gray-100/60 h-72 lg:h-auto flex-1 min-h-[280px]">
                             <iframe
-                                title="classyfitters Location"
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13064.98407698014!2d71.97558!3d34.62117!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38de6e8abf00c0ab%3A0x5d2b0ee1bdac53d0!2sBatkhela%2C%20Malakand%2C%20Khyber%20Pakhtunkhwa!5e0!3m2!1sen!2spk!4v1700000000000"
+                                title="Classyfitters Location – Main GT Road Amandara"
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3308.5!2d72.0503!3d34.3869!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38de6b0000000001%3A0x1!2sAmandara%2C+GT+Road%2C+Khyber+Pakhtunkhwa%2C+Pakistan!5e0!3m2!1sen!2spk!4v1700000000000"
                                 width="100%"
                                 height="100%"
                                 style={{ border: 0, minHeight: '280px' }}

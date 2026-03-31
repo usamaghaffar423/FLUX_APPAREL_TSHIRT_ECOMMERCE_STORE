@@ -110,10 +110,10 @@ const Header = () => {
                                 <Mail size={13} />
                                 <span>info@classyfitters.shop</span>
                             </div>
-                            <div className="flex items-center space-x-1.5">
+                            <a href="tel:+923481099433" className="flex items-center space-x-1.5 hover:text-[#EB3461] transition-colors">
                                 <Phone size={13} />
-                                <span>0300-XXXXXXX</span>
-                            </div>
+                                <span>+92 348 1099433</span>
+                            </a>
                             {user && (
                                 <button onClick={logout} className="flex items-center space-x-1 hover:text-[#EB3461] transition-colors">
                                     <LogOut size={12} />

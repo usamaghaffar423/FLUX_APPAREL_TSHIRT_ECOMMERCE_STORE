@@ -1,30 +1,56 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Send, ChevronRight, CheckCircle } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, ChevronRight, CheckCircle, Clock, MessageCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-const INFO_ITEMS = [
-    {
-        icon: Mail,
-        title: 'Email Us',
-        detail: 'support@classyfitters.shop',
-        sub: 'We reply within 24 hours',
-        href: 'mailto:support@classyfitters.shop',
-    },
+const CONTACT_INFO = [
     {
         icon: Phone,
-        title: 'Call / WhatsApp',
-        detail: '+92 348 1099433',
-        sub: 'Mon–Sat, 9 AM – 9 PM PKT',
+        label: 'Call / WhatsApp',
+        primary: '+92 348 1099433',
+        secondary: 'Mon – Sat · 9 AM to 9 PM PKT',
         href: 'tel:+923481099433',
+        bg: 'bg-emerald-50',
+        iconColor: 'text-emerald-600',
+        iconBg: 'bg-emerald-100 group-hover:bg-emerald-500',
+    },
+    {
+        icon: Mail,
+        label: 'Email Us',
+        primary: 'support@classyfitters.shop',
+        secondary: 'We reply within 24 hours',
+        href: 'mailto:support@classyfitters.shop',
+        bg: 'bg-pink-50',
+        iconColor: 'text-[#EB3461]',
+        iconBg: 'bg-pink-100 group-hover:bg-[#EB3461]',
     },
     {
         icon: MapPin,
-        title: 'Visit Us',
-        detail: 'Main GT Road Amandara',
-        sub: 'Near Popular CNG, KPK, Pakistan',
+        label: 'Visit Our Shop',
+        primary: 'Main GT Road Amandara',
+        secondary: 'Near Popular CNG, KPK, Pakistan',
         href: 'https://maps.google.com/?q=Amandara+GT+Road+KPK+Pakistan',
+        bg: 'bg-blue-50',
+        iconColor: 'text-blue-600',
+        iconBg: 'bg-blue-100 group-hover:bg-blue-500',
     },
+    {
+        icon: MessageCircle,
+        label: 'WhatsApp Chat',
+        primary: 'Chat With Us Directly',
+        secondary: 'Quick replies on WhatsApp',
+        href: 'https://wa.me/923481099433',
+        bg: 'bg-green-50',
+        iconColor: 'text-green-600',
+        iconBg: 'bg-green-100 group-hover:bg-green-500',
+    },
+];
+
+const FAQS = [
+    { q: 'KPK mein delivery kitne din mein hoti hai?', a: 'Amandara, Peshawar, Mardan, Mingora — 2 se 3 working days mein delivery.' },
+    { q: 'Returns ka kya policy hai?', a: '7-din hassle-free return — product original condition mein hona chahiye.' },
+    { q: 'Cash on Delivery available hai?', a: 'Haan! Poore Pakistan mein COD available hai.' },
+    { q: 'Order track karna ho to?', a: 'My Orders section mein jao ya WhatsApp par order ID bhejo.' },
 ];
 
 const ContactPage = () => {
@@ -32,27 +58,21 @@ const ContactPage = () => {
     const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
 
     const handleChange = (e) => setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // In production this would POST to your PHP endpoint
-        setSubmitted(true);
-    };
+    const handleSubmit = (e) => { e.preventDefault(); setSubmitted(true); };
 
     return (
         <div className="min-h-screen bg-gray-50">
 
-            {/* ── Hero ─────────────────────────────────────────── */}
-            <section className="relative bg-white pt-16 pb-20 px-6 md:px-12 overflow-hidden border-b border-gray-100">
-                <div className="absolute top-0 right-0 w-1/3 h-full opacity-5 pointer-events-none">
-                    <div className="absolute inset-0 bg-[#EB3461] rounded-full blur-[120px] translate-x-1/2 -translate-y-1/2" />
-                </div>
+            {/* ── Hero Banner ──────────────────────────────────── */}
+            <section className="relative bg-white border-b border-gray-100 overflow-hidden pt-16 pb-20 px-6 md:px-12">
+                {/* Pink glow */}
+                <div className="absolute top-0 right-0 w-96 h-96 bg-[#EB3461] opacity-5 rounded-full blur-[100px] pointer-events-none" />
+                <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#EB3461] opacity-5 rounded-full blur-[80px] pointer-events-none" />
+
                 <div className="max-w-7xl mx-auto relative z-10">
-                    {/* Breadcrumb */}
                     <motion.div
-                        initial={{ opacity: 0, y: 8 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="flex items-center space-x-2 text-[10px] font-black uppercase tracking-widest text-gray-400 mb-8"
+                        initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+                        className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-gray-400 mb-8"
                     >
                         <Link to="/" className="hover:text-[#EB3461] transition-colors">Home</Link>
                         <ChevronRight size={12} />
@@ -60,176 +80,183 @@ const ContactPage = () => {
                     </motion.div>
 
                     <motion.span
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
+                        initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
                         className="text-[#EB3461] text-[10px] font-black uppercase tracking-[0.4em] mb-4 block"
                     >
-                        Get In Touch
+                        Hum Se Baat Karo
                     </motion.span>
                     <motion.h1
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.08 }}
+                        initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }}
                         className="text-5xl md:text-7xl font-black text-gray-900 leading-[0.9] tracking-tighter mb-6 uppercase"
                     >
-                        Let's Talk About <br />
-                        <span className="text-[#EB3461]">Your Style</span>
+                        Apna Style<br />
+                        <span className="text-[#EB3461]">Hum Dhundh Dete Hain</span>
                     </motion.h1>
                     <motion.p
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.15 }}
+                        initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
                         className="text-gray-500 text-lg max-w-2xl font-medium leading-relaxed"
                     >
-                        Have questions about our collections or need help with an order? Our team
-                        is here to give you the ultimate fashion experience.
+                        Order, returns, ya koi bhi sawaal — humari team hamesha ready hai. WhatsApp, call, ya email — jahan comfortable ho.
                     </motion.p>
                 </div>
             </section>
 
-            {/* ── Info Cards ────────────────────────────────────── */}
+            {/* ── Contact Info Cards ────────────────────────────── */}
             <section className="py-16 px-6 md:px-12">
-                <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-                    {INFO_ITEMS.map((item, i) => (
-                        <motion.a
-                            key={i}
-                            href={item.href}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: i * 0.1 }}
-                            className="group bg-white rounded-[32px] border border-gray-100 shadow-xl shadow-gray-100/60 p-8 flex items-start gap-5 hover:border-[#EB3461]/30 hover:shadow-pink-100/40 transition-all"
+                <div className="max-w-7xl mx-auto">
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+                        {CONTACT_INFO.map((item, i) => (
+                            <motion.a
+                                key={i}
+                                href={item.href}
+                                target={item.href.startsWith('http') ? '_blank' : undefined}
+                                rel={item.href.startsWith('http') ? 'noreferrer' : undefined}
+                                initial={{ opacity: 0, y: 24 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: i * 0.08 }}
+                                className={`group ${item.bg} rounded-[28px] p-7 flex flex-col gap-4 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer`}
+                            >
+                                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-colors duration-300 ${item.iconBg}`}>
+                                    <item.icon size={24} className={`${item.iconColor} group-hover:text-white transition-colors duration-300`} />
+                                </div>
+                                <div>
+                                    <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">{item.label}</p>
+                                    <p className="font-black text-gray-900 text-[15px] leading-snug">{item.primary}</p>
+                                    <p className="text-xs text-gray-500 font-medium mt-1">{item.secondary}</p>
+                                </div>
+                            </motion.a>
+                        ))}
+                    </div>
+
+                    {/* ── Form + Map ───────────────────────────────── */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-16">
+
+                        {/* Contact Form */}
+                        <motion.div
+                            initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }}
+                            className="bg-white rounded-[40px] border border-gray-100 shadow-2xl shadow-gray-100/60 p-8 md:p-12"
                         >
-                            <div className="w-14 h-14 rounded-2xl bg-pink-50 flex items-center justify-center shrink-0 group-hover:bg-[#EB3461] transition-colors">
-                                <item.icon size={22} className="text-[#EB3461] group-hover:text-white transition-colors" />
-                            </div>
-                            <div>
-                                <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">{item.title}</p>
-                                <p className="font-black text-gray-900 text-base">{item.detail}</p>
-                                <p className="text-xs font-medium text-gray-400 mt-0.5">{item.sub}</p>
-                            </div>
-                        </motion.a>
-                    ))}
-                </div>
-
-                {/* ── Main Content: Form + Map ────────────────────── */}
-                <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
-
-                    {/* Form */}
-                    <motion.div
-                        initial={{ opacity: 0, x: -30 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.6 }}
-                        className="bg-white rounded-[40px] border border-gray-100 shadow-2xl shadow-gray-100/60 p-8 md:p-12"
-                    >
-                        {submitted ? (
-                            <div className="flex flex-col items-center justify-center h-full py-16 text-center">
-                                <motion.div
-                                    initial={{ scale: 0 }}
-                                    animate={{ scale: 1 }}
-                                    transition={{ type: 'spring', damping: 12 }}
-                                >
-                                    <CheckCircle size={64} className="text-[#EB3461] mb-6" />
-                                </motion.div>
-                                <h3 className="text-2xl font-black text-gray-900 uppercase tracking-tight mb-3">Message Sent!</h3>
-                                <p className="text-gray-400 font-medium max-w-xs">Thanks for reaching out. We'll get back to you within 24 hours.</p>
-                                <button
-                                    onClick={() => { setSubmitted(false); setForm({ name: '', email: '', phone: '', message: '' }); }}
-                                    className="mt-8 text-[10px] font-black uppercase tracking-widest text-[#EB3461] hover:underline"
-                                >
-                                    Send Another Message
-                                </button>
-                            </div>
-                        ) : (
-                            <>
-                                <h2 className="text-2xl font-black text-gray-900 uppercase tracking-tight mb-2">Send a Message</h2>
-                                <p className="text-gray-400 text-sm font-medium mb-8">Fill in the form below and we'll respond shortly.</p>
-
-                                <form onSubmit={handleSubmit} className="space-y-5">
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                        <div className="space-y-2">
-                                            <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Full Name</label>
-                                            <input
-                                                name="name" type="text" value={form.name} onChange={handleChange}
-                                                placeholder="John Doe" required
-                                                className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-4 text-sm font-medium text-gray-900 placeholder:text-gray-300 focus:outline-none focus:border-[#EB3461] focus:bg-white transition-all"
-                                            />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Email Address</label>
-                                            <input
-                                                name="email" type="email" value={form.email} onChange={handleChange}
-                                                placeholder="john@example.com" required
-                                                className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-4 text-sm font-medium text-gray-900 placeholder:text-gray-300 focus:outline-none focus:border-[#EB3461] focus:bg-white transition-all"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="space-y-2">
-                                        <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Phone Number</label>
-                                        <input
-                                            name="phone" type="tel" value={form.phone} onChange={handleChange}
-                                            placeholder="+92 348 1099433"
-                                            className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-4 text-sm font-medium text-gray-900 placeholder:text-gray-300 focus:outline-none focus:border-[#EB3461] focus:bg-white transition-all"
-                                        />
-                                    </div>
-
-                                    <div className="space-y-2">
-                                        <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Your Message</label>
-                                        <textarea
-                                            name="message" rows="5" value={form.message} onChange={handleChange}
-                                            placeholder="How can we help you today?" required
-                                            className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-4 text-sm font-medium text-gray-900 placeholder:text-gray-300 focus:outline-none focus:border-[#EB3461] focus:bg-white transition-all resize-none"
-                                        />
-                                    </div>
-
+                            {submitted ? (
+                                <div className="flex flex-col items-center justify-center h-full py-16 text-center">
+                                    <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', damping: 12 }}>
+                                        <CheckCircle size={64} className="text-[#EB3461] mb-6" />
+                                    </motion.div>
+                                    <h3 className="text-2xl font-black text-gray-900 uppercase tracking-tight mb-3">Message Bhej Diya!</h3>
+                                    <p className="text-gray-400 font-medium max-w-xs">Shukriya! Hum 24 ghante mein reply karenge.</p>
                                     <button
-                                        type="submit"
-                                        className="w-full bg-[#EB3461] hover:bg-black text-white rounded-2xl py-5 flex items-center justify-center gap-3 font-black uppercase text-xs tracking-widest transition-all shadow-xl shadow-pink-100 hover:-translate-y-0.5 active:translate-y-0"
+                                        onClick={() => { setSubmitted(false); setForm({ name: '', email: '', phone: '', message: '' }); }}
+                                        className="mt-8 text-[10px] font-black uppercase tracking-widest text-[#EB3461] hover:underline"
                                     >
-                                        Send Message
-                                        <Send size={15} />
+                                        Dobara Message Bhejo
                                     </button>
-                                </form>
-                            </>
-                        )}
-                    </motion.div>
+                                </div>
+                            ) : (
+                                <>
+                                    <h2 className="text-2xl font-black text-gray-900 uppercase tracking-tight mb-1">Message Bhejo</h2>
+                                    <p className="text-gray-400 text-sm font-medium mb-8">Form bhar do — hum jald reply karenge.</p>
 
-                    {/* Map + FAQ side */}
+                                    <form onSubmit={handleSubmit} className="space-y-5">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                            <div className="space-y-1.5">
+                                                <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Apna Naam</label>
+                                                <input name="name" type="text" value={form.name} onChange={handleChange}
+                                                    placeholder="Ali Khan" required
+                                                    className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-4 text-sm font-medium text-gray-900 placeholder:text-gray-300 focus:outline-none focus:border-[#EB3461] focus:bg-white transition-all"
+                                                />
+                                            </div>
+                                            <div className="space-y-1.5">
+                                                <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Email Address</label>
+                                                <input name="email" type="email" value={form.email} onChange={handleChange}
+                                                    placeholder="ali@example.com" required
+                                                    className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-4 text-sm font-medium text-gray-900 placeholder:text-gray-300 focus:outline-none focus:border-[#EB3461] focus:bg-white transition-all"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="space-y-1.5">
+                                            <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Phone / WhatsApp</label>
+                                            <input name="phone" type="tel" value={form.phone} onChange={handleChange}
+                                                placeholder="+92 348 1099433"
+                                                className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-4 text-sm font-medium text-gray-900 placeholder:text-gray-300 focus:outline-none focus:border-[#EB3461] focus:bg-white transition-all"
+                                            />
+                                        </div>
+                                        <div className="space-y-1.5">
+                                            <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Apna Sawaal</label>
+                                            <textarea name="message" rows="5" value={form.message} onChange={handleChange}
+                                                placeholder="Kya poochna chahte ho?" required
+                                                className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-4 text-sm font-medium text-gray-900 placeholder:text-gray-300 focus:outline-none focus:border-[#EB3461] focus:bg-white transition-all resize-none"
+                                            />
+                                        </div>
+                                        <button type="submit"
+                                            className="w-full bg-[#EB3461] hover:bg-black text-white rounded-2xl py-5 flex items-center justify-center gap-3 font-black uppercase text-xs tracking-widest transition-all shadow-xl shadow-pink-100 hover:-translate-y-0.5 active:translate-y-0"
+                                        >
+                                            Message Bhejo <Send size={15} />
+                                        </button>
+                                    </form>
+                                </>
+                            )}
+                        </motion.div>
+
+                        {/* Map + Hours */}
+                        <motion.div
+                            initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }}
+                            className="flex flex-col gap-6"
+                        >
+                            {/* Map embed */}
+                            <div className="rounded-[32px] overflow-hidden border border-gray-100 shadow-xl flex-1 min-h-[300px]">
+                                <iframe
+                                    title="Classyfitters – Main GT Road Amandara"
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3310.0!2d72.0503!3d34.38!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38de6c3e4f9db491%3A0x5a2e2e0f3c8c2b6a!2sAmandara%2C+Khyber+Pakhtunkhwa%2C+Pakistan!5e0!3m2!1sen!2spk!4v1700000000000"
+                                    width="100%" height="100%"
+                                    style={{ border: 0, minHeight: '300px' }}
+                                    allowFullScreen="" loading="lazy"
+                                    referrerPolicy="no-referrer-when-downgrade"
+                                />
+                            </div>
+
+                            {/* Business Hours */}
+                            <div className="bg-white rounded-[28px] border border-gray-100 shadow-xl p-7">
+                                <div className="flex items-center gap-3 mb-5">
+                                    <div className="w-10 h-10 rounded-xl bg-pink-50 flex items-center justify-center">
+                                        <Clock size={18} className="text-[#EB3461]" />
+                                    </div>
+                                    <h3 className="text-[11px] font-black uppercase tracking-widest text-gray-900">Business Hours</h3>
+                                </div>
+                                {[
+                                    { day: 'Monday – Friday', time: '9:00 AM – 9:00 PM' },
+                                    { day: 'Saturday',        time: '10:00 AM – 8:00 PM' },
+                                    { day: 'Sunday',          time: '11:00 AM – 6:00 PM' },
+                                ].map((row, i) => (
+                                    <div key={i} className={`flex justify-between items-center py-3 ${i < 2 ? 'border-b border-gray-50' : ''}`}>
+                                        <span className="text-sm font-bold text-gray-600">{row.day}</span>
+                                        <span className="text-sm font-black text-gray-900">{row.time}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </motion.div>
+                    </div>
+
+                    {/* ── FAQ Section ──────────────────────────────── */}
                     <motion.div
-                        initial={{ opacity: 0, x: 30 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.6 }}
-                        className="flex flex-col gap-8"
+                        initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+                        className="bg-white rounded-[40px] border border-gray-100 shadow-xl p-8 md:p-12"
                     >
-                        {/* Google Map embed */}
-                        <div className="rounded-[40px] overflow-hidden border border-gray-100 shadow-xl shadow-gray-100/60 h-72 lg:h-auto flex-1 min-h-[280px]">
-                            <iframe
-                                title="Classyfitters Location – Main GT Road Amandara"
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3308.5!2d72.0503!3d34.3869!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38de6b0000000001%3A0x1!2sAmandara%2C+GT+Road%2C+Khyber+Pakhtunkhwa%2C+Pakistan!5e0!3m2!1sen!2spk!4v1700000000000"
-                                width="100%"
-                                height="100%"
-                                style={{ border: 0, minHeight: '280px' }}
-                                allowFullScreen=""
-                                loading="lazy"
-                                referrerPolicy="no-referrer-when-downgrade"
-                            />
+                        <div className="text-center mb-10">
+                            <span className="text-[#EB3461] text-[10px] font-black uppercase tracking-[0.4em] mb-3 block">FAQ</span>
+                            <h2 className="text-3xl md:text-4xl font-black text-gray-900 uppercase tracking-tighter">
+                                Aksar Pooche Gaye <span className="text-[#EB3461]">Sawaal</span>
+                            </h2>
                         </div>
-
-                        {/* Quick FAQs */}
-                        <div className="bg-white rounded-[32px] border border-gray-100 shadow-xl shadow-gray-100/60 p-8">
-                            <h3 className="text-xs font-black uppercase tracking-widest text-gray-900 mb-5">Quick FAQs</h3>
-                            {[
-                                { q: 'What are your delivery times?', a: '3–5 working days within Pakistan.' },
-                                { q: 'Do you accept returns?', a: '7-day hassle-free return policy on all products.' },
-                                { q: 'How can I track my order?', a: 'You\'ll receive a tracking link via email after dispatch.' },
-                            ].map((faq, i) => (
-                                <div key={i} className={`py-4 ${i !== 2 ? 'border-b border-gray-50' : ''}`}>
-                                    <p className="text-xs font-black text-gray-900 uppercase tracking-wide mb-1">{faq.q}</p>
-                                    <p className="text-sm text-gray-400 font-medium">{faq.a}</p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            {FAQS.map((faq, i) => (
+                                <div key={i} className="bg-gray-50 rounded-2xl p-6">
+                                    <p className="text-sm font-black text-gray-900 mb-2">{faq.q}</p>
+                                    <p className="text-sm text-gray-500 font-medium leading-relaxed">{faq.a}</p>
                                 </div>
                             ))}
                         </div>
                     </motion.div>
+
                 </div>
             </section>
         </div>

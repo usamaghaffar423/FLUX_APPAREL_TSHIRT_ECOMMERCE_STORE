@@ -18,6 +18,7 @@ import ProductDetail from './components/ProductDetail'
 import CartSidebar from './components/CartSidebar'
 import AuthPage from './components/AuthPage'
 import UserProfile from './components/UserProfile'
+import ContactPage from './components/ContactPage'
 
 const Section = ({ children }) => (
   <motion.div
@@ -111,6 +112,7 @@ function App() {
             <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/checkout"   element={<Checkout />} />
             <Route path="/profile"    element={<UserProfile />} />
+            <Route path="/contact"    element={<ContactPage />} />
           </Routes>
         </AnimatePresence>
       </main>

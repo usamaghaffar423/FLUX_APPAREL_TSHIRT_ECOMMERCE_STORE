@@ -40,12 +40,13 @@ const TrendyClothes = () => {
     );
 
     const CardSkeleton = () => (
-        <div className="animate-pulse">
-            <div className="aspect-[4/5] bg-gray-100 rounded-[28px] mb-3" />
-            <div className="space-y-2">
-                <div className="h-2.5 bg-gray-100 rounded w-1/3" />
-                <div className="h-4 bg-gray-100 rounded w-3/4" />
-                <div className="h-3.5 bg-gray-100 rounded w-1/4" />
+        <div className="animate-pulse bg-white rounded-[32px] overflow-hidden border border-gray-50">
+            <div className="aspect-[3/4] bg-gray-100 m-2 rounded-[24px]" />
+            <div className="p-5 space-y-2">
+                <div className="h-2.5 bg-gray-100 rounded w-1/3 mx-auto" />
+                <div className="h-4 bg-gray-100 rounded w-3/4 mx-auto" />
+                <div className="h-3.5 bg-gray-100 rounded w-1/4 mx-auto" />
+                <div className="h-10 bg-gray-100 rounded-2xl mt-3" />
             </div>
         </div>
     );
@@ -137,7 +138,7 @@ const TrendyClothes = () => {
                     </motion.div>
 
                     {/* RIGHT — 2×2 product card grid */}
-                    <div className="lg:col-span-7 grid grid-cols-2 gap-5 content-start">
+                    <div className="lg:col-span-7 grid grid-cols-2 gap-5">
                         {loading
                             ? [...Array(4)].map((_, i) => <CardSkeleton key={i} />)
                             : gridProducts.map((p, i) => (
@@ -148,7 +149,7 @@ const TrendyClothes = () => {
                                     viewport={{ once: true }}
                                     transition={{ delay: i * 0.07 }}
                                 >
-                                    <ProductCard product={p} variant="featured" />
+                                    <ProductCard product={p} />
                                 </motion.div>
                             ))
                         }
@@ -172,7 +173,7 @@ const TrendyClothes = () => {
                                 viewport={{ once: true }}
                                 transition={{ delay: i * 0.07 }}
                             >
-                                <ProductCard product={p} variant="featured" />
+                                <ProductCard product={p} />
                             </motion.div>
                         ))}
                     </motion.div>

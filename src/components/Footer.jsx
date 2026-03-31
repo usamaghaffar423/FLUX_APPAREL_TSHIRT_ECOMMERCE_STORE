@@ -23,8 +23,6 @@ const Footer = () => {
                     </p>
                     <div className="flex space-x-4">
                         {[
-                            { Icon: Facebook,  href: 'https://www.facebook.com/classyfitters' },
-                            { Icon: Instagram, href: 'https://www.instagram.com/classyfitters' },
                             { Icon: TikTokIcon, href: 'https://www.tiktok.com/@classyfitters_edenrobe?_r=1&_t=ZS-957yO3Wc4pw' },
                             { Icon: Youtube,  href: '#' },
                         ].map((social, idx) => (

@@ -59,8 +59,8 @@ const SaleBanner = () => {
                         {/* ── Text + timer ────────────────────────────────
                             Mobile  : below image, centered
                             Desktop : right half, vertically centered         */}
-                        <div className="w-full text-white text-center pb-10
-                                        md:ml-auto md:w-[55%] md:flex md:flex-col md:justify-center md:text-left md:py-0">
+                        <div className="w-full text-white text-center py-10
+                                        md:ml-auto md:w-[55%] md:flex md:flex-col md:justify-center md:text-left md:py-12">
 
                             <h2 className="text-4xl sm:text-5xl md:text-6xl font-black uppercase leading-tight mb-1">
                                 FLAT 30% OFF!

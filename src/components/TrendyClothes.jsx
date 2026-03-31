@@ -1,26 +1,75 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronRight, ArrowRight } from 'lucide-react';
+import { ChevronRight, ArrowRight, ShoppingBag } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { API_BASE_URL } from '../config';
 import { IMAGES } from '../constants';
 import ProductCard from './ProductCard';
+import { useCart } from '../context/CartContext';
+
+// Editorial hero card — first product gets this treatment
+const HeroCard = ({ product }) => {
+    const { addToCart } = useCart();
+    const price = parseFloat(product?.price ?? 0);
+
+    return (
+        <div className="relative rounded-[28px] overflow-hidden aspect-[3/4] group cursor-pointer">
+            <img
+                src={product?.image_url || IMAGES.hero}
+                alt={product?.title || 'Hot Arrival'}
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                onError={(e) => { e.target.onerror = null; e.target.src = IMAGES.hero; }}
+            />
+            {/* Dark gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+
+            {/* Trending badge */}
+            <div className="absolute top-4 left-4">
+                <span className="bg-[#EB3461] text-white text-[8px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full">
+                    🔥 Trending
+                </span>
+            </div>
+
+            {/* Quick add button */}
+            <button
+                onClick={(e) => { e.stopPropagation(); addToCart(product); }}
+                className="absolute top-4 right-4 bg-white/20 backdrop-blur-md p-2.5 rounded-full text-white hover:bg-[#EB3461] transition-all opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 duration-300"
+            >
+                <ShoppingBag size={15} />
+            </button>
+
+            {/* Bottom info */}
+            <Link to={`/product/${product?.id}`} className="absolute bottom-0 left-0 right-0 p-5 z-10">
+                <p className="text-[8px] font-black uppercase tracking-[0.3em] text-white/50 mb-1">
+                    {product?.category || 'Hot Arrivals'}
+                </p>
+                <h3 className="text-lg font-black text-white leading-tight uppercase tracking-tight line-clamp-2 mb-2">
+                    {product?.title}
+                </h3>
+                {price > 0 && (
+                    <p className="text-white/70 text-sm font-bold mb-3">
+                        Rs. {price.toLocaleString()}
+                    </p>
+                )}
+                <span className="inline-flex items-center gap-1.5 bg-white text-black px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-widest hover:bg-[#EB3461] hover:text-white transition-all">
+                    Shop Now <ArrowRight size={10} />
+                </span>
+            </Link>
+        </div>
+    );
+};
 
 const TrendyClothes = () => {
-    const [products,       setProducts]       = useState([]);
-    const [featuredProduct,setFeaturedProduct] = useState(null);
-    const [loading,        setLoading]         = useState(true);
+    const [products, setProducts] = useState([]);
+    const [loading,  setLoading]  = useState(true);
 
     useEffect(() => {
         const fetchTrending = async () => {
             try {
-                const res  = await fetch(`${API_BASE_URL}/get_products.php?trending=1&limit=9`);
+                const res  = await fetch(`${API_BASE_URL}/get_products.php?trending=1&limit=8`);
                 if (!res.ok) throw new Error('Failed');
                 const data = await res.json();
-                if (Array.isArray(data) && data.length > 0) {
-                    setFeaturedProduct(data[0]);
-                    setProducts(data.slice(1));
-                }
+                if (Array.isArray(data)) setProducts(data);
             } catch (err) {
                 console.error('TrendyClothes fetch error:', err);
             } finally {
@@ -29,33 +78,6 @@ const TrendyClothes = () => {
         };
         fetchTrending();
     }, []);
-
-    // Products 0-3 fill the 2×2 bento beside the hero
-    const gridProducts   = products.slice(0, 4);
-    // Remaining products go into the bottom row (auto-col count)
-    const bottomProducts = products.slice(4);
-
-    const FeaturedSkeleton = () => (
-        <div className="rounded-[40px] overflow-hidden min-h-[560px] bg-gray-100 animate-pulse" />
-    );
-
-    const CardSkeleton = () => (
-        <div className="animate-pulse bg-white rounded-[32px] overflow-hidden border border-gray-50">
-            <div className="aspect-[3/4] bg-gray-100 m-2 rounded-[24px]" />
-            <div className="p-5 space-y-2">
-                <div className="h-2.5 bg-gray-100 rounded w-1/3 mx-auto" />
-                <div className="h-4 bg-gray-100 rounded w-3/4 mx-auto" />
-                <div className="h-3.5 bg-gray-100 rounded w-1/4 mx-auto" />
-                <div className="h-10 bg-gray-100 rounded-2xl mt-3" />
-            </div>
-        </div>
-    );
-
-    // Bottom row col-count based on how many products exist
-    const bottomCols =
-        bottomProducts.length >= 4 ? 'sm:grid-cols-2 lg:grid-cols-4' :
-        bottomProducts.length === 3 ? 'sm:grid-cols-3' :
-        bottomProducts.length === 2 ? 'sm:grid-cols-2' : '';
 
     return (
         <section className="py-24 px-6 md:px-12 bg-[#FAFAFA]">
@@ -83,100 +105,36 @@ const TrendyClothes = () => {
                     </Link>
                 </div>
 
-                {/* ── Main Bento Grid ─────────────────────────────────── */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 mb-5">
-
-                    {/* LEFT — Tall editorial hero card */}
-                    <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                        className="lg:col-span-5"
-                    >
-                        {loading ? <FeaturedSkeleton /> : (
-                            <div className="relative rounded-[40px] overflow-hidden h-full min-h-[560px] group">
-                                <img
-                                    src={featuredProduct?.image_url || IMAGES.hero}
-                                    alt={featuredProduct?.title || 'Hot Arrival'}
-                                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                                    onError={(e) => { e.target.onerror = null; e.target.src = IMAGES.hero; }}
+                {/* ── Pinterest Masonry Grid ───────────────────────────── */}
+                {loading ? (
+                    <div className="columns-2 md:columns-3 lg:columns-4 gap-5">
+                        {[...Array(8)].map((_, i) => (
+                            <div key={i} className="break-inside-avoid mb-5 animate-pulse">
+                                <div
+                                    className="bg-gray-100 rounded-[28px] w-full"
+                                    style={{ aspectRatio: i % 3 === 0 ? '3/4' : '3/4' }}
                                 />
-
-                                {/* Gradient overlay */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
-
-                                {/* Top badge */}
-                                <div className="absolute top-6 left-6">
-                                    <span className="bg-[#EB3461] text-white text-[9px] font-black uppercase tracking-widest px-3.5 py-1.5 rounded-full">
-                                        🔥 Trending
-                                    </span>
-                                </div>
-
-                                {/* Bottom content */}
-                                <div className="absolute bottom-8 left-8 right-8 z-10">
-                                    <p className="text-[9px] font-black uppercase tracking-[0.35em] text-white/50 mb-2">
-                                        {featuredProduct?.category || 'Hot Arrivals'}
-                                    </p>
-                                    <h3 className="text-2xl md:text-3xl font-black text-white mb-2 leading-tight uppercase tracking-tight line-clamp-2">
-                                        {featuredProduct?.title || 'Classyfitters Latest Drop'}
-                                    </h3>
-                                    {featuredProduct?.price && (
-                                        <p className="text-white/70 text-sm font-bold mb-5">
-                                            Rs. {parseFloat(featuredProduct.price).toLocaleString()}
-                                        </p>
-                                    )}
-                                    <Link
-                                        to={featuredProduct ? `/product/${featuredProduct.id}` : '/shop'}
-                                        className="inline-flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-[#EB3461] hover:text-white transition-all shadow-xl"
-                                    >
-                                        Shop Now <ArrowRight size={12} />
-                                    </Link>
-                                </div>
                             </div>
-                        )}
-                    </motion.div>
-
-                    {/* RIGHT — 2×2 product card grid */}
-                    <div className="lg:col-span-7 grid grid-cols-2 gap-5">
-                        {loading
-                            ? [...Array(4)].map((_, i) => <CardSkeleton key={i} />)
-                            : gridProducts.map((p, i) => (
-                                <motion.div
-                                    key={p.id}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: i * 0.07 }}
-                                >
-                                    <ProductCard product={p} />
-                                </motion.div>
-                            ))
-                        }
+                        ))}
                     </div>
-                </div>
-
-                {/* ── Bottom overflow row ─────────────────────────────── */}
-                {!loading && bottomProducts.length > 0 && (
-                    <motion.div
-                        initial={{ opacity: 0, y: 24 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5 }}
-                        className={`grid grid-cols-2 gap-5 ${bottomCols}`}
-                    >
-                        {bottomProducts.map((p, i) => (
+                ) : (
+                    <div className="columns-2 md:columns-3 lg:columns-4 gap-5">
+                        {products.map((p, i) => (
                             <motion.div
                                 key={p.id}
+                                className="break-inside-avoid mb-5"
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
-                                transition={{ delay: i * 0.07 }}
+                                transition={{ duration: 0.4, delay: i * 0.05 }}
                             >
-                                <ProductCard product={p} />
+                                {i === 0
+                                    ? <HeroCard product={p} />
+                                    : <ProductCard product={p} />
+                                }
                             </motion.div>
                         ))}
-                    </motion.div>
+                    </div>
                 )}
 
             </div>

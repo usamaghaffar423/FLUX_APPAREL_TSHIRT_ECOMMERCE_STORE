@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { IMAGES } from '../constants';
 
 const getTimeLeft = () => {
-    const now = new Date();
-    // Count down to midnight tonight — resets every day so it's always running
     const midnight = new Date();
     midnight.setHours(24, 0, 0, 0);
-    const diff = midnight - now;
-
+    const diff = midnight - new Date();
     return {
         days: String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0'),
         hrs:  String(Math.floor((diff / (1000 * 60 * 60)) % 24)).padStart(2, '0'),
@@ -25,52 +23,95 @@ const SaleBanner = () => {
     }, []);
 
     const units = [
-        { label: 'DAYS', val: time.days },
-        { label: 'HRS',  val: time.hrs  },
-        { label: 'MIN',  val: time.min  },
-        { label: 'SEC',  val: time.sec  },
+        { label: 'Days',    val: time.days },
+        { label: 'Hours',   val: time.hrs  },
+        { label: 'Minutes', val: time.min  },
+        { label: 'Seconds', val: time.sec  },
     ];
 
     return (
-        <section className="relative bg-[#EB3461] py-20 overflow-hidden">
-            <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between relative z-10">
-                <div className="md:w-1/2 mb-12 md:mb-0">
-                    <div className="relative w-[400px] h-[400px]">
-                        <div className="absolute inset-0 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
-                        <img
-                            src={IMAGES.promo_lady}
-                            alt="Classyfitters Sale – Ladies Fashion KPK Pakistan"
-                            className="relative z-10 w-full h-full object-cover rounded-3xl"
-                        />
-                    </div>
-                </div>
+        /*
+         * Outer wrapper adds top spacing equal to the image overflow amount
+         * so the lady image can bleed above the pink band without
+         * overlapping the previous section.
+         */
+        <div className="relative mt-0 sm:mt-20 md:mt-28">
+            <section className="relative bg-[#EB3461] overflow-visible">
 
-                <div className="md:w-1/2 text-white text-center md:text-left">
-                    <h2 className="text-6xl font-black mb-6 leading-tight">
-                        FLAT 30%<br />OFF!
-                        <br /><span className="text-4xl font-light">Sirf Aaj Tak Ka Mauqaa!</span>
-                    </h2>
+                <div className="max-w-7xl mx-auto px-6 md:px-16">
+                    {/* ── Inner row ── fixed height on desktop, auto on mobile */}
+                    <div className="relative flex flex-col items-center gap-8
+                                    md:flex-row md:items-stretch md:h-[290px]">
 
-                    <div className="flex gap-4 mb-10 justify-center md:justify-start">
-                        {units.map((unit, i) => (
-                            <div key={i} className="bg-white/20 backdrop-blur-md px-6 py-4 rounded-xl min-w-[80px] text-center border border-white/30">
-                                <p className="text-2xl font-bold tabular-nums">{unit.val}</p>
-                                <p className="text-[10px] uppercase font-bold tracking-widest">{unit.label}</p>
+                        {/* ── Lady image ──────────────────────────────────
+                            Mobile  : normal flow, centered, capped height
+                            Desktop : absolute, bottom-anchored, bleeds above  */}
+                        <div className="w-full flex justify-center pt-8
+                                        md:w-auto md:absolute md:bottom-0 md:left-0 md:pt-0 md:h-[420px] z-10">
+                            <img
+                                src={IMAGES.promo_lady}
+                                alt="Classyfitters Sale – Ladies Fashion KPK Pakistan"
+                                className="h-52 w-auto object-contain object-bottom drop-shadow-2xl
+                                           md:h-full"
+                            />
+                        </div>
+
+                        {/* ── Text + timer ────────────────────────────────
+                            Mobile  : below image, centered
+                            Desktop : right half, vertically centered         */}
+                        <div className="w-full text-white text-center pb-10
+                                        md:ml-auto md:w-[55%] md:flex md:flex-col md:justify-center md:text-left md:py-0">
+
+                            <h2 className="text-4xl sm:text-5xl md:text-6xl font-black uppercase leading-tight mb-1">
+                                FLAT 30% OFF!
+                            </h2>
+                            <p className="text-lg md:text-xl font-light uppercase tracking-widest mb-7 opacity-90">
+                                Sirf Aaj Tak Ka Mauqaa!
+                            </p>
+
+                            {/* Timer boxes — white border style like the reference */}
+                            <div className="flex gap-3 mb-8 justify-center md:justify-start">
+                                {units.map((unit, i) => (
+                                    <div
+                                        key={i}
+                                        className="border-2 border-white/60 rounded-xl
+                                                   px-3 py-2.5 min-w-[62px]
+                                                   sm:px-5 sm:py-3 sm:min-w-[78px]
+                                                   text-center"
+                                    >
+                                        <p className="text-2xl sm:text-3xl font-bold tabular-nums leading-none">
+                                            {unit.val}
+                                        </p>
+                                        <p className="text-[8px] sm:text-[10px] uppercase tracking-widest opacity-70 font-bold mt-1">
+                                            {unit.label}
+                                        </p>
+                                    </div>
+                                ))}
                             </div>
-                        ))}
+
+                            <div>
+                                <Link
+                                    to="/shop"
+                                    className="inline-block bg-white text-[#EB3461] px-10 py-3.5 rounded-full
+                                               font-black uppercase tracking-widest text-sm
+                                               hover:bg-gray-100 transition-all shadow-xl
+                                               active:scale-95"
+                                >
+                                    Ab Shop Karo
+                                </Link>
+                            </div>
+                        </div>
                     </div>
-
-                    <button className="bg-white text-pink-600 px-10 py-4 rounded-full font-bold uppercase tracking-widest hover:bg-gray-100 transition-all hover:scale-105 active:scale-95 shadow-xl">
-                        Ab Shop Karo
-                    </button>
                 </div>
-            </div>
 
-            {/* Background Text */}
-            <div className="absolute top-1/2 left-0 -translate-y-1/2 text-[20vw] font-black text-white opacity-5 whitespace-nowrap pointer-events-none select-none">
-                MEGA CHHOOT 2026
-            </div>
-        </section>
+                {/* Faint background text */}
+                <div className="absolute top-1/2 left-0 -translate-y-1/2 text-[18vw] font-black
+                                text-white opacity-[0.04] whitespace-nowrap pointer-events-none select-none">
+                    MEGA CHHOOT 2026
+                </div>
+
+            </section>
+        </div>
     );
 };
 

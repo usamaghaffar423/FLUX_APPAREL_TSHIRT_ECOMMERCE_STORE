@@ -7,7 +7,6 @@ import Hero from './components/Hero'
 import PromoCards from './components/PromoCards'
 import BestSellers from './components/BestSellers'
 import SaleBanner from './components/SaleBanner'
-import TrendyClothes from './components/TrendyClothes'
 import FeaturedCollection from './components/FeaturedCollection'
 import LeadCollection from './components/LeadCollection'
 import Footer from './components/Footer'
@@ -37,7 +36,6 @@ const HomePage = () => (
     <Section><PromoCards /></Section>
     <Section><BestSellers /></Section>
     <Section><SaleBanner /></Section>
-    <Section><TrendyClothes /></Section>
     <Section><FeaturedCollection /></Section>
     <Section><LeadCollection /></Section>
   </>

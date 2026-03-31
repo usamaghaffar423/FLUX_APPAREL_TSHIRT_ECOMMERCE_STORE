@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { ChevronRight } from 'lucide-react';
 import { API_BASE_URL } from '../config';
 import ProductCard from './ProductCard';
 
-// Skeleton loader for product card
 const SkeletonCard = () => (
     <div className="flex flex-col animate-pulse">
         <div className="aspect-[4/5] bg-gray-100 rounded-[30px] mb-4" />
@@ -17,64 +17,48 @@ const SkeletonCard = () => (
 
 const FeaturedCollection = () => {
     const [products, setProducts] = useState([]);
-    const [featuredImg, setFeaturedImg] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [loading,  setLoading]  = useState(true);
 
     useEffect(() => {
-        const fetchFeatured = async () => {
-            try {
-                const response = await fetch(`${API_BASE_URL}/get_products.php?limit=5`);
-                if (!response.ok) throw new Error('Failed');
-                const data = await response.json();
-                if (Array.isArray(data) && data.length > 0) {
-                    // Use first product image as the featured hero background
-                    setFeaturedImg(data[0].image_url);
-                    setProducts(data.slice(1, 5)); // Next 4 products for the grid
-                }
-            } catch (err) {
-                console.error('FeaturedCollection fetch error:', err);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchFeatured();
+        fetch(`${API_BASE_URL}/get_products.php?limit=8`)
+            .then(r => r.ok ? r.json() : [])
+            .then(data => setProducts(Array.isArray(data) ? data : []))
+            .catch(() => {})
+            .finally(() => setLoading(false));
     }, []);
 
     return (
         <section className="py-24 px-6 md:px-12 bg-white">
-            <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+            <div className="max-w-7xl mx-auto">
 
-                {/* Left Large Promo Card */}
-                <div className="relative rounded-[40px] overflow-hidden min-h-[600px] group">
-                    <img
-                        src={featuredImg || 'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&q=80&w=1200'}
-                        alt="Featured Collection"
-                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                        onError={(e) => {
-                            e.target.onerror = null;
-                            e.target.src = 'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&q=80&w=1200';
-                        }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
-                    <div className="absolute bottom-12 left-12 right-12 z-10">
-                        <h3 className="text-4xl font-bold text-white mb-4 leading-tight">
-                            Aaj Ka Look,<br />Kal Ki Yaad
-                        </h3>
-                        <p className="text-gray-200 text-sm mb-8 max-w-sm leading-relaxed opacity-90">
-                            Watches se Perfumes tak, Handbags se Edenrobe Clothes tak — Classyfitters mein milega sab kuch. KPK ka apna fashion store.
-                        </p>
-                        <Link to="/shop" className="inline-block bg-white text-black px-8 py-3 rounded-full text-[11px] font-black uppercase tracking-widest hover:bg-[#EB3461] hover:text-white transition-all">
-                            ABHI DEKHO
-                        </Link>
+                {/* Header */}
+                <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-6">
+                    <div>
+                        <span className="text-[#EB3461] text-[10px] font-black uppercase tracking-[0.4em] mb-3 block">
+                            Featured
+                        </span>
+                        <h2 className="text-4xl md:text-5xl font-black text-gray-900 leading-[0.9] tracking-tighter uppercase">
+                            Aaj Ka Look,<br />
+                            <span className="text-[#EB3461]">Kal Ki Yaad</span>
+                        </h2>
                     </div>
+                    <Link
+                        to="/shop"
+                        className="group flex items-center gap-3 text-[11px] font-black uppercase tracking-widest text-gray-900 hover:text-[#EB3461] transition-all self-start sm:self-auto"
+                    >
+                        Sab Dekho
+                        <div className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center group-hover:border-[#EB3461] group-hover:bg-[#EB3461] group-hover:text-white transition-all">
+                            <ChevronRight size={16} />
+                        </div>
+                    </Link>
                 </div>
 
-                {/* Right Product Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-12">
+                {/* Product Grid */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8">
                     {loading
-                        ? [...Array(4)].map((_, i) => <SkeletonCard key={i} />)
-                        : products.map((product) => (
-                            <ProductCard key={product.id} product={product} variant="featured" />
+                        ? [...Array(8)].map((_, i) => <SkeletonCard key={i} />)
+                        : products.map(p => (
+                            <ProductCard key={p.id} product={p} variant="featured" />
                         ))
                     }
                 </div>

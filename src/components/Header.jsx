@@ -35,14 +35,44 @@ const NAV_ITEMS = [
     { label: 'Contact',      href: '/contact'                                                },
 ];
 
+const EDENROBE_ITEMS = [
+    {
+        label: 'Printed Unstitch Lawn',
+        desc:  'Vibrant seasonal prints for every occasion',
+        icon:  '🌿',
+        href:  '/shop?category=Printed+Unstitch+Lawn',
+        gradient: 'from-emerald-50 to-teal-50',
+        accent: 'group-hover:text-emerald-600',
+    },
+    {
+        label: 'Premium & Festive Unstitch',
+        desc:  'Luxury fabrics crafted for special moments',
+        icon:  '✨',
+        href:  '/shop?category=Premium+Festive+Unstitch',
+        gradient: 'from-amber-50 to-yellow-50',
+        accent: 'group-hover:text-amber-600',
+    },
+    {
+        label: 'Fragrances',
+        desc:  'Signature Edenrobe scents, signature style',
+        icon:  '🌸',
+        href:  '/shop?category=Fragrances',
+        gradient: 'from-pink-50 to-rose-50',
+        accent: 'group-hover:text-[#EB3461]',
+    },
+];
+
 const Header = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen]   = useState(false);
     const [isSearchOpen,     setIsSearchOpen]        = useState(false);
     const [isScrolled,       setIsScrolled]          = useState(false);
     const [isCatOpen,        setIsCatOpen]           = useState(false);
     const [isMobileCatOpen,  setIsMobileCatOpen]     = useState(false);
+    const [isEdenOpen,       setIsEdenOpen]          = useState(false);
+    const [isMobileEdenOpen, setIsMobileEdenOpen]    = useState(false);
     const [categories,       setCategories]          = useState([]);
-    const catTimeoutRef = useRef(null);
+    const catTimeoutRef  = useRef(null);
+    const edenTimeoutRef = useRef(null);
 
     const { cartCount, setIsCartOpen } = useCart();
     const { user, logout, isAdmin }    = useAuth();
@@ -73,16 +103,20 @@ const Header = () => {
         return () => { document.body.style.overflow = 'unset'; };
     }, [isMobileMenuOpen]);
 
-    // Close mega menu when navigating
+    // Close all menus when navigating
     useEffect(() => {
         setIsCatOpen(false);
+        setIsEdenOpen(false);
         setIsMobileMenuOpen(false);
     }, [location.pathname]);
 
     const visibleNavItems = NAV_ITEMS;
 
-    const openCat  = () => { clearTimeout(catTimeoutRef.current); setIsCatOpen(true); };
-    const closeCat = () => { catTimeoutRef.current = setTimeout(() => setIsCatOpen(false), 150); };
+    const openCat  = () => { clearTimeout(catTimeoutRef.current);  setIsCatOpen(true); };
+    const closeCat = () => { catTimeoutRef.current  = setTimeout(() => setIsCatOpen(false),  150); };
+
+    const openEden  = () => { clearTimeout(edenTimeoutRef.current); setIsEdenOpen(true); };
+    const closeEden = () => { edenTimeoutRef.current = setTimeout(() => setIsEdenOpen(false), 150); };
 
     return (
         <>
@@ -154,6 +188,74 @@ const Header = () => {
                                     <span className="absolute bottom-[-4px] left-0 h-[2px] w-0 bg-[#EB3461] transition-all duration-300 origin-left group-hover:w-full" />
                                 </Link>
                             ))}
+
+                            {/* ── Edenrobe Dropdown ── */}
+                            <div
+                                className="relative"
+                                onMouseEnter={openEden}
+                                onMouseLeave={closeEden}
+                            >
+                                <button className={`relative flex items-center gap-1.5 font-bold text-[12px] uppercase tracking-wider transition-colors group ${isEdenOpen ? 'text-[#EB3461]' : 'text-gray-800 hover:text-[#EB3461]'}`}>
+                                    Edenrobe
+                                    <ChevronDown size={14} className={`transition-transform duration-300 ${isEdenOpen ? 'rotate-180' : ''}`} />
+                                    <span className="absolute -top-3 -right-7 bg-gray-900 text-white text-[7px] font-black uppercase tracking-wide px-1.5 py-0.5 rounded-full leading-none">Excl.</span>
+                                    <span className={`absolute bottom-[-4px] left-0 h-[2px] bg-[#EB3461] transition-all duration-300 ${isEdenOpen ? 'w-full' : 'w-0 group-hover:w-full'}`} />
+                                </button>
+
+                                <AnimatePresence>
+                                    {isEdenOpen && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 8 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: 8 }}
+                                            transition={{ duration: 0.18 }}
+                                            onMouseEnter={openEden}
+                                            onMouseLeave={closeEden}
+                                            className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[420px] bg-white rounded-[28px] shadow-2xl shadow-gray-400/20 border border-gray-100 overflow-hidden"
+                                        >
+                                            {/* Dark header */}
+                                            <div className="bg-gradient-to-r from-gray-950 to-gray-800 px-7 py-5 flex items-center justify-between">
+                                                <div>
+                                                    <p className="text-[9px] font-black uppercase tracking-[0.45em] text-white/40 mb-0.5">Exclusive Collection</p>
+                                                    <h3 className="text-xl font-black text-white uppercase tracking-tight leading-none">Edenrobe</h3>
+                                                </div>
+                                                <div className="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center text-xl">✦</div>
+                                            </div>
+
+                                            {/* Sub-items */}
+                                            <div className="p-4 space-y-2">
+                                                {EDENROBE_ITEMS.map(item => (
+                                                    <Link
+                                                        key={item.label}
+                                                        to={item.href}
+                                                        className="group flex items-center gap-4 p-4 rounded-2xl hover:bg-gray-50 transition-all border border-transparent hover:border-gray-100"
+                                                    >
+                                                        <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${item.gradient} flex items-center justify-center text-xl shrink-0`}>
+                                                            {item.icon}
+                                                        </div>
+                                                        <div className="flex-1 min-w-0">
+                                                            <p className={`text-[11px] font-black uppercase tracking-wide text-gray-900 transition-colors ${item.accent}`}>{item.label}</p>
+                                                            <p className="text-[10px] text-gray-400 font-medium mt-0.5 leading-tight">{item.desc}</p>
+                                                        </div>
+                                                        <ArrowRight size={14} className="text-gray-300 group-hover:text-gray-700 group-hover:translate-x-1 transition-all shrink-0" />
+                                                    </Link>
+                                                ))}
+                                            </div>
+
+                                            {/* Footer strip */}
+                                            <div className="mx-4 mb-4 flex items-center justify-between px-5 py-3.5 rounded-2xl border border-gray-100 bg-gray-50">
+                                                <p className="text-[10px] font-black uppercase tracking-widest text-gray-500">Explore All Edenrobe</p>
+                                                <Link
+                                                    to="/shop?brand=edenrobe"
+                                                    className="bg-gray-900 text-white px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest hover:bg-[#EB3461] transition-all"
+                                                >
+                                                    View All
+                                                </Link>
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </div>
 
                             {/* Categories Mega Menu Trigger */}
                             <div
@@ -395,6 +497,65 @@ const Header = () => {
                                                         <span className="text-[12px] font-black text-gray-700 group-hover:text-white uppercase tracking-wide transition-colors">
                                                             All Products
                                                         </span>
+                                                    </Link>
+                                                </div>
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                </div>
+
+                                {/* Edenrobe Section */}
+                                <div className="border-t border-gray-100 pt-5 mt-1">
+                                    <button
+                                        onClick={() => setIsMobileEdenOpen(v => !v)}
+                                        className="w-full flex items-center justify-between px-4 py-3.5 rounded-2xl hover:bg-gray-50 transition-all mb-1"
+                                    >
+                                        <div className="flex items-center gap-2.5">
+                                            <span className="text-[15px] font-black text-gray-900 uppercase tracking-wide">Edenrobe</span>
+                                            <span className="bg-gray-900 text-white text-[7px] font-black uppercase tracking-wide px-1.5 py-0.5 rounded-full leading-none">Excl.</span>
+                                        </div>
+                                        <ChevronDown size={16} className={`text-gray-400 transition-transform duration-300 ${isMobileEdenOpen ? 'rotate-180' : ''}`} />
+                                    </button>
+
+                                    <AnimatePresence>
+                                        {isMobileEdenOpen && (
+                                            <motion.div
+                                                initial={{ height: 0, opacity: 0 }}
+                                                animate={{ height: 'auto', opacity: 1 }}
+                                                exit={{ height: 0, opacity: 0 }}
+                                                className="overflow-hidden"
+                                            >
+                                                {/* Mini dark header */}
+                                                <div className="mx-4 mb-3 bg-gradient-to-r from-gray-950 to-gray-800 rounded-2xl px-4 py-3 flex items-center gap-3">
+                                                    <div className="text-white/60 text-xl">✦</div>
+                                                    <div>
+                                                        <p className="text-[8px] font-black uppercase tracking-[0.4em] text-white/40">Exclusive</p>
+                                                        <p className="text-[13px] font-black text-white uppercase tracking-tight leading-none">Edenrobe Collection</p>
+                                                    </div>
+                                                </div>
+
+                                                <div className="pl-4 space-y-1 pb-3">
+                                                    {EDENROBE_ITEMS.map(cat => (
+                                                        <Link
+                                                            key={cat.label}
+                                                            to={cat.href}
+                                                            onClick={() => setIsMobileMenuOpen(false)}
+                                                            className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-pink-50 transition-all group"
+                                                        >
+                                                            <span className="text-xl">{cat.icon}</span>
+                                                            <div className="min-w-0">
+                                                                <p className="text-[12px] font-black text-gray-700 group-hover:text-[#EB3461] uppercase tracking-wide transition-colors leading-tight">{cat.label}</p>
+                                                                <p className="text-[10px] text-gray-400 font-medium mt-0.5 leading-tight">{cat.desc}</p>
+                                                            </div>
+                                                        </Link>
+                                                    ))}
+                                                    <Link
+                                                        to="/shop?brand=edenrobe"
+                                                        onClick={() => setIsMobileMenuOpen(false)}
+                                                        className="flex items-center gap-3 px-4 py-3 rounded-xl bg-gray-900 hover:bg-[#EB3461] transition-all group mt-2"
+                                                    >
+                                                        <span className="text-xl text-white">✦</span>
+                                                        <span className="text-[12px] font-black text-white uppercase tracking-wide">All Edenrobe</span>
                                                     </Link>
                                                 </div>
                                             </motion.div>

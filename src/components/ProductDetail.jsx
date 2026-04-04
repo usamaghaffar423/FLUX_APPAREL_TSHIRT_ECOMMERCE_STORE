@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-    ShoppingBag, Star, ShieldCheck, Truck, ArrowLeft, ArrowRight,
+    ShoppingBag, Star, ShieldCheck, Truck,
     Heart, Plus, Minus, Flame, Share2, RotateCcw, ChevronDown,
     ZoomIn, Check, Package
 } from 'lucide-react';
@@ -227,120 +227,108 @@ const ProductDetail = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 xl:gap-20 items-start">
 
                     {/* ══ LEFT: Image Gallery ══════════════════════════════════ */}
-                    <div className="lg:sticky lg:top-28 space-y-4">
+                    <div className="lg:sticky lg:top-28">
+                        <div className="flex gap-3">
 
-                        {/* Main Image */}
-                        <div className="relative group">
-                            <motion.div
-                                key={activeImg}
-                                initial={{ opacity: 0, scale: 0.98 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ duration: 0.35, ease: 'easeOut' }}
-                                className="relative aspect-[4/5] rounded-[32px] overflow-hidden bg-gray-50 shadow-2xl shadow-gray-200/40 cursor-zoom-in"
-                                onMouseEnter={() => setZoomed(true)}
-                                onMouseLeave={() => setZoomed(false)}
-                                onMouseMove={handleMouseMove}
-                            >
-                                <img
-                                    src={currentImg}
-                                    alt={images[activeImg]?.alt || product.title}
-                                    className="w-full h-full object-cover transition-transform duration-700"
-                                    style={zoomed ? {
-                                        transform: 'scale(1.6)',
-                                        transformOrigin: `${zoomPos.x}% ${zoomPos.y}%`,
-                                    } : {}}
-                                    onError={e => { e.target.src = FALLBACK; }}
-                                />
-
-                                {/* Zoom hint */}
-                                <div className="absolute bottom-5 right-5 bg-white/90 backdrop-blur-sm rounded-2xl px-3 py-2 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                                    <ZoomIn size={12} className="text-gray-500" />
-                                    <span className="text-[9px] font-black uppercase tracking-widest text-gray-500">Hover to zoom</span>
-                                </div>
-
-                                {/* Badges */}
-                                <div className="absolute top-6 left-6 flex flex-col gap-2 z-10">
-                                    {product.is_trending && (
-                                        <div className="bg-[#EB3461] text-white px-3 py-1.5 rounded-xl flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest shadow-lg shadow-pink-200">
-                                            <Flame size={11} /> Hot
-                                        </div>
-                                    )}
-                                    {hasDiscount && (
-                                        <div className="bg-black text-white px-3 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest">
-                                            -{discount.toFixed(0)}% OFF
-                                        </div>
-                                    )}
-                                    {outOfStock && (
-                                        <div className="bg-gray-700 text-white px-3 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest">
-                                            Sold Out
-                                        </div>
-                                    )}
-                                </div>
-
-                                {/* Wishlist + Share */}
-                                <div className="absolute top-6 right-6 flex flex-col gap-2 z-10">
-                                    <button
-                                        onClick={() => setWishlisted(w => !w)}
-                                        className={`w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg backdrop-blur-sm transition-all ${
-                                            wishlisted ? 'bg-[#EB3461] text-white' : 'bg-white/90 text-gray-400 hover:text-[#EB3461]'
-                                        }`}
-                                    >
-                                        <Heart size={17} fill={wishlisted ? 'currentColor' : 'none'} />
-                                    </button>
-                                    <button
-                                        onClick={() => navigator.share?.({ title: product.title, url: window.location.href })}
-                                        className="w-10 h-10 rounded-2xl bg-white/90 backdrop-blur-sm flex items-center justify-center text-gray-400 hover:text-[#EB3461] shadow-lg transition-colors"
-                                    >
-                                        <Share2 size={15} />
-                                    </button>
-                                </div>
-
-                                {/* Prev / Next arrows */}
-                                {images.length > 1 && (
-                                    <>
-                                        <button
-                                            onClick={() => setActiveImg(i => (i - 1 + images.length) % images.length)}
-                                            className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 rounded-2xl flex items-center justify-center shadow-lg text-gray-600 hover:text-[#EB3461] transition-colors z-10"
+                            {/* ── Vertical Thumbnail Strip ── */}
+                            {images.length > 1 && (
+                                <div className="flex flex-col gap-3 overflow-y-auto max-h-[560px] pr-0.5 scrollbar-hide shrink-0">
+                                    {images.map((img, i) => (
+                                        <motion.button
+                                            key={i}
+                                            whileHover={{ scale: 1.04 }}
+                                            whileTap={{ scale: 0.96 }}
+                                            onMouseEnter={() => setActiveImg(i)}
+                                            onClick={() => setActiveImg(i)}
+                                            className={`relative w-[76px] h-[76px] rounded-2xl overflow-hidden border-2 transition-all shrink-0 ${
+                                                activeImg === i
+                                                    ? 'border-[#EB3461] shadow-lg shadow-pink-100 opacity-100'
+                                                    : 'border-gray-100 opacity-55 hover:opacity-90 hover:border-gray-300'
+                                            }`}
                                         >
-                                            <ArrowLeft size={16} />
-                                        </button>
-                                        <button
-                                            onClick={() => setActiveImg(i => (i + 1) % images.length)}
-                                            className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 rounded-2xl flex items-center justify-center shadow-lg text-gray-600 hover:text-[#EB3461] transition-colors z-10"
-                                        >
-                                            <ArrowRight size={16} />
-                                        </button>
-                                        {/* Counter */}
-                                        <div className="absolute bottom-5 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-sm text-white text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full">
-                                            {activeImg + 1} / {images.length}
-                                        </div>
-                                    </>
-                                )}
-                            </motion.div>
-                        </div>
+                                            <img
+                                                src={img.url}
+                                                alt={img.alt}
+                                                className="w-full h-full object-cover"
+                                                onError={e => { e.target.src = FALLBACK; }}
+                                            />
+                                            {activeImg === i && (
+                                                <div className="absolute inset-0 ring-2 ring-inset ring-[#EB3461] rounded-2xl" />
+                                            )}
+                                        </motion.button>
+                                    ))}
+                                </div>
+                            )}
 
-                        {/* Thumbnails */}
-                        {images.length > 1 && (
-                            <div className="flex gap-3 overflow-x-auto pb-1 scrollbar-hide">
-                                {images.map((img, i) => (
-                                    <motion.button
-                                        key={i}
-                                        whileHover={{ scale: 1.05 }}
-                                        whileTap={{ scale: 0.95 }}
-                                        onClick={() => setActiveImg(i)}
-                                        className={`relative flex-shrink-0 w-20 h-20 rounded-2xl overflow-hidden border-2 transition-all ${
-                                            activeImg === i ? 'border-[#EB3461] shadow-lg shadow-pink-100' : 'border-gray-100 opacity-60 hover:opacity-100'
-                                        }`}
-                                    >
-                                        <img src={img.url} alt={img.alt} className="w-full h-full object-cover"
-                                            onError={e => { e.target.src = FALLBACK; }} />
-                                        {activeImg === i && (
-                                            <div className="absolute inset-0 border-2 border-[#EB3461] rounded-2xl" />
+                            {/* ── Main Image ── */}
+                            <div className="flex-1 relative group min-w-0">
+                                <motion.div
+                                    key={activeImg}
+                                    initial={{ opacity: 0, scale: 0.98 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ duration: 0.25, ease: 'easeOut' }}
+                                    className="relative aspect-[4/5] rounded-[32px] overflow-hidden bg-gray-50 shadow-2xl shadow-gray-200/40 cursor-zoom-in"
+                                    onMouseEnter={() => setZoomed(true)}
+                                    onMouseLeave={() => setZoomed(false)}
+                                    onMouseMove={handleMouseMove}
+                                >
+                                    <img
+                                        src={currentImg}
+                                        alt={images[activeImg]?.alt || product.title}
+                                        className="w-full h-full object-cover transition-transform duration-700"
+                                        style={zoomed ? {
+                                            transform: 'scale(1.6)',
+                                            transformOrigin: `${zoomPos.x}% ${zoomPos.y}%`,
+                                        } : {}}
+                                        onError={e => { e.target.src = FALLBACK; }}
+                                    />
+
+                                    {/* Zoom hint */}
+                                    <div className="absolute bottom-5 right-5 bg-white/90 backdrop-blur-sm rounded-2xl px-3 py-2 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                                        <ZoomIn size={12} className="text-gray-500" />
+                                        <span className="text-[9px] font-black uppercase tracking-widest text-gray-500">Hover to zoom</span>
+                                    </div>
+
+                                    {/* Badges */}
+                                    <div className="absolute top-6 left-6 flex flex-col gap-2 z-10">
+                                        {product.is_trending && (
+                                            <div className="bg-[#EB3461] text-white px-3 py-1.5 rounded-xl flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest shadow-lg shadow-pink-200">
+                                                <Flame size={11} /> Hot
+                                            </div>
                                         )}
-                                    </motion.button>
-                                ))}
+                                        {hasDiscount && (
+                                            <div className="bg-black text-white px-3 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest">
+                                                -{discount.toFixed(0)}% OFF
+                                            </div>
+                                        )}
+                                        {outOfStock && (
+                                            <div className="bg-gray-700 text-white px-3 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest">
+                                                Sold Out
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Wishlist + Share */}
+                                    <div className="absolute top-6 right-6 flex flex-col gap-2 z-10">
+                                        <button
+                                            onClick={() => setWishlisted(w => !w)}
+                                            className={`w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg backdrop-blur-sm transition-all ${
+                                                wishlisted ? 'bg-[#EB3461] text-white' : 'bg-white/90 text-gray-400 hover:text-[#EB3461]'
+                                            }`}
+                                        >
+                                            <Heart size={17} fill={wishlisted ? 'currentColor' : 'none'} />
+                                        </button>
+                                        <button
+                                            onClick={() => navigator.share?.({ title: product.title, url: window.location.href })}
+                                            className="w-10 h-10 rounded-2xl bg-white/90 backdrop-blur-sm flex items-center justify-center text-gray-400 hover:text-[#EB3461] shadow-lg transition-colors"
+                                        >
+                                            <Share2 size={15} />
+                                        </button>
+                                    </div>
+                                </motion.div>
                             </div>
-                        )}
+
+                        </div>
                     </div>
 
                     {/* ══ RIGHT: Product Info ══════════════════════════════════ */}

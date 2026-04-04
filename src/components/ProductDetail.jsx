@@ -121,9 +121,18 @@ const ProductDetail = () => {
                 if (!p || p.error) { navigate('/shop'); return; }
                 setProduct(p);
 
-                // Gallery — use single image for now (multi-image via admin later)
-                const gallery = [{ url: p.image_url || FALLBACK, alt: p.title }];
-                setImages(gallery);
+                // Fetch gallery images; fall back to single product image
+                try {
+                    const imgRes  = await fetch(`${API_BASE_URL}/get_product_images.php?product_id=${id}`);
+                    const imgData = await imgRes.json();
+                    if (Array.isArray(imgData) && imgData.length > 0) {
+                        setImages(imgData.map(img => ({ url: img.image_url, alt: img.alt_text || p.title })));
+                    } else {
+                        setImages([{ url: p.image_url || FALLBACK, alt: p.title }]);
+                    }
+                } catch {
+                    setImages([{ url: p.image_url || FALLBACK, alt: p.title }]);
+                }
 
                 // Default first color
                 if (p.colors) {

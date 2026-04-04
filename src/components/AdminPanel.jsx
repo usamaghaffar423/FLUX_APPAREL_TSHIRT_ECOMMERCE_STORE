@@ -38,6 +38,12 @@ const ProductModal = ({ product, categories, token, onSave, onClose }) => {
     const [preview, setPreview]     = useState(product?.image || '');
     const fileRef                   = useRef(null);
 
+    // Gallery images: { url (relative path or full url), preview (full url), id? (db id for existing) }
+    const [extraImages, setExtraImages]         = useState([]);
+    const [removedIds, setRemovedIds]           = useState([]);
+    const [extraUploading, setExtraUploading]   = useState(false);
+    const extraFileRef                          = useRef(null);
+
     const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
 
     const toggleSize = (s) => {
@@ -46,6 +52,44 @@ const ProductModal = ({ product, categories, token, onSave, onClose }) => {
         set('sizes', next.join(', '));
     };
     const hasSize = (s) => form.sizes?.split(',').map(x => x.trim()).includes(s);
+
+    // Load existing gallery images when editing
+    useEffect(() => {
+        if (!product?.id) return;
+        fetch(`${API_BASE_URL}/admin_product_images.php?product_id=${product.id}`, {
+            headers: { Authorization: `Bearer ${token}` },
+        })
+            .then(r => r.json())
+            .then(data => {
+                if (Array.isArray(data)) {
+                    setExtraImages(data.map(img => ({
+                        url: img.image_url,
+                        preview: img.image_url,
+                        id: img.id,
+                    })));
+                }
+            })
+            .catch(() => {});
+    }, [product?.id]);
+
+    const handleExtraUpload = async (file) => {
+        try {
+            const fd = new FormData();
+            fd.append('image', file);
+            const res  = await fetch(`${API_BASE_URL}/admin_upload_image.php`, {
+                method: 'POST',
+                headers: { Authorization: `Bearer ${token}` },
+                body: fd,
+            });
+            const data = await res.json();
+            if (data.success) {
+                const fullPreview = API_BASE_URL.replace('/api', '') + '/' + data.url;
+                setExtraImages(arr => [...arr, { url: data.url, preview: fullPreview }]);
+            } else {
+                setError(data.error || 'Upload failed.');
+            }
+        } catch { setError('Upload failed. Check your connection.'); }
+    };
 
     const handleUpload = async (file) => {
         if (!file) return;
@@ -89,7 +133,29 @@ const ProductModal = ({ product, categories, token, onSave, onClose }) => {
                 body: JSON.stringify({ ...form, price: +form.price, old_price: form.old_price ? +form.old_price : null }),
             });
             const data = await res.json();
-            data.success ? onSave() : setError(data.error || 'Save failed.');
+            if (!data.success) { setError(data.error || 'Save failed.'); return; }
+
+            const productId = product ? product.id : data.id;
+
+            // Delete removed gallery images
+            await Promise.all(removedIds.map(id =>
+                fetch(`${API_BASE_URL}/admin_product_images.php?id=${id}`, {
+                    method: 'DELETE',
+                    headers: { Authorization: `Bearer ${token}` },
+                })
+            ));
+
+            // Upload new gallery images (those without a db id)
+            const newImages = extraImages.filter(img => !img.id);
+            for (let i = 0; i < newImages.length; i++) {
+                await fetch(`${API_BASE_URL}/admin_product_images.php`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+                    body: JSON.stringify({ product_id: productId, image_url: newImages[i].url, sort_order: i }),
+                });
+            }
+
+            onSave();
         } catch { setError('Network error. Please try again.'); }
         finally { setSaving(false); }
     };
@@ -163,6 +229,58 @@ const ProductModal = ({ product, categories, token, onSave, onClose }) => {
                         <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 block mb-1.5">Or Paste Image URL</label>
                         <input type="text" value={form.image} onChange={e => { set('image', e.target.value); setPreview(e.target.value); }}
                             placeholder="https://..." className={inputCls} />
+                    </div>
+
+                    {/* ── Gallery Images ── */}
+                    <div>
+                        <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 block mb-2">
+                            Gallery Images <span className="text-gray-300 normal-case font-medium">— shown on product page (select multiple)</span>
+                        </label>
+                        <div className="flex flex-wrap gap-3">
+                            {extraImages.map((img, i) => (
+                                <div key={i} className="relative w-20 h-20 rounded-2xl overflow-hidden border-2 border-gray-200 group shrink-0 bg-gray-50">
+                                    <img src={img.preview} alt="" className="w-full h-full object-cover"
+                                        onError={e => { e.target.style.display = 'none'; }} />
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            if (img.id) setRemovedIds(r => [...r, img.id]);
+                                            setExtraImages(arr => arr.filter((_, j) => j !== i));
+                                        }}
+                                        className="absolute top-1 right-1 w-5 h-5 bg-black/70 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                                    >
+                                        <X size={10} />
+                                    </button>
+                                </div>
+                            ))}
+                            {/* Add slot */}
+                            <button
+                                type="button"
+                                onClick={() => extraFileRef.current?.click()}
+                                disabled={extraUploading}
+                                className="w-20 h-20 rounded-2xl border-2 border-dashed border-gray-200 hover:border-[#EB3461] transition-colors flex flex-col items-center justify-center text-gray-300 hover:text-[#EB3461] shrink-0 disabled:opacity-50"
+                            >
+                                {extraUploading
+                                    ? <div className="w-5 h-5 border-2 border-pink-100 border-t-[#EB3461] rounded-full animate-spin" />
+                                    : <><Plus size={18} /><span className="text-[9px] font-black mt-1 uppercase tracking-widest">Add</span></>
+                                }
+                            </button>
+                            <input
+                                ref={extraFileRef}
+                                type="file"
+                                accept="image/*"
+                                multiple
+                                className="hidden"
+                                onChange={async (e) => {
+                                    const files = Array.from(e.target.files);
+                                    e.target.value = '';
+                                    if (!files.length) return;
+                                    setExtraUploading(true);
+                                    for (const file of files) await handleExtraUpload(file);
+                                    setExtraUploading(false);
+                                }}
+                            />
+                        </div>
                     </div>
 
                     {/* Name + Category */}

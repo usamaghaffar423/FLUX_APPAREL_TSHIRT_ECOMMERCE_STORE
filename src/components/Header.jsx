@@ -7,16 +7,6 @@ import { useAuth } from '../context/AuthContext';
 import { API_BASE_URL } from '../config';
 import SearchModal from './SearchModal';
 
-// Category icons for the mega menu
-const CAT_ICONS = {
-    perfumes:  '🌸',
-    watches:   '⌚',
-    handbags:  '👜',
-    wallets:   '💼',
-    stitched:  '👗',
-    jewellery: '💍',
-};
-
 const CAT_DESC = {
     perfumes:  'Edenrobe & Imported',
     watches:   'Tissot, Rizen & More',
@@ -241,12 +231,9 @@ const Header = () => {
                                                             <Link
                                                                 key={item.label}
                                                                 to={item.href}
-                                                                className="group flex items-center gap-4 px-4 py-3 rounded-2xl hover:bg-gray-50 transition-all border border-transparent hover:border-gray-100"
+                                                                className="group flex items-center justify-between px-4 py-3 rounded-2xl hover:bg-gray-50 transition-all border border-transparent hover:border-gray-100"
                                                             >
-                                                                <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${item.gradient} flex items-center justify-center text-lg shrink-0`}>
-                                                                    {item.icon}
-                                                                </div>
-                                                                <div className="flex-1 min-w-0">
+                                                                <div>
                                                                     <p className="text-[11px] font-black uppercase tracking-wide text-gray-900 group-hover:text-[#EB3461] transition-colors">{item.label}</p>
                                                                     <p className="text-[10px] text-gray-400 font-medium mt-0.5 leading-tight">{item.desc}</p>
                                                                 </div>
@@ -316,15 +303,13 @@ const Header = () => {
                                             {/* Category grid */}
                                             <div className="p-6 grid grid-cols-3 gap-3">
                                                 {categories.map(cat => {
-                                                    const icon = CAT_ICONS[cat.slug] || '🏷️';
                                                     const desc = CAT_DESC[cat.slug] || cat.description || '';
                                                     return (
                                                         <Link
                                                             key={cat.id}
                                                             to={`/category?category=${cat.slug}`}
-                                                            className="group flex flex-col items-center text-center p-4 rounded-2xl hover:bg-pink-50 transition-all hover:shadow-sm border border-transparent hover:border-pink-100"
+                                                            className="group flex flex-col p-4 rounded-2xl hover:bg-pink-50 transition-all hover:shadow-sm border border-transparent hover:border-pink-100"
                                                         >
-                                                            <span className="text-3xl mb-2 group-hover:scale-110 transition-transform duration-300 inline-block">{icon}</span>
                                                             <span className="text-[11px] font-black uppercase tracking-wide text-gray-900 group-hover:text-[#EB3461] transition-colors leading-tight mb-1">
                                                                 {cat.name}
                                                             </span>
@@ -335,9 +320,8 @@ const Header = () => {
                                                 {/* View all tile */}
                                                 <Link
                                                     to="/category"
-                                                    className="group flex flex-col items-center text-center p-4 rounded-2xl bg-gray-50 hover:bg-[#EB3461] transition-all border border-gray-100 hover:border-[#EB3461]"
+                                                    className="group flex flex-col p-4 rounded-2xl bg-gray-50 hover:bg-[#EB3461] transition-all border border-gray-100 hover:border-[#EB3461]"
                                                 >
-                                                    <span className="text-3xl mb-2 group-hover:scale-110 transition-transform duration-300 inline-block">✦</span>
                                                     <span className="text-[11px] font-black uppercase tracking-wide text-gray-900 group-hover:text-white transition-colors leading-tight mb-1">
                                                         All Products
                                                     </span>
@@ -499,23 +483,23 @@ const Header = () => {
                                                             key={cat.id}
                                                             to={`/category?category=${cat.slug}`}
                                                             onClick={() => setIsMobileMenuOpen(false)}
-                                                            className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-pink-50 transition-all group"
+                                                            className="flex items-center justify-between px-4 py-3 rounded-xl hover:bg-pink-50 transition-all group"
                                                         >
-                                                            <span className="text-xl">{CAT_ICONS[cat.slug] || '🏷️'}</span>
                                                             <span className="text-[12px] font-black text-gray-700 group-hover:text-[#EB3461] uppercase tracking-wide transition-colors">
                                                                 {cat.name}
                                                             </span>
+                                                            <ArrowRight size={14} className="text-gray-300 group-hover:text-[#EB3461] transition-colors shrink-0" />
                                                         </Link>
                                                     ))}
                                                     <Link
                                                         to="/category"
                                                         onClick={() => setIsMobileMenuOpen(false)}
-                                                        className="flex items-center gap-3 px-4 py-3 rounded-xl bg-gray-50 hover:bg-[#EB3461] transition-all group mt-2"
+                                                        className="flex items-center justify-between px-4 py-3 rounded-xl bg-gray-50 hover:bg-[#EB3461] transition-all group mt-2"
                                                     >
-                                                        <span className="text-xl">✦</span>
                                                         <span className="text-[12px] font-black text-gray-700 group-hover:text-white uppercase tracking-wide transition-colors">
                                                             All Products
                                                         </span>
+                                                        <ArrowRight size={14} className="text-gray-300 group-hover:text-white transition-colors shrink-0" />
                                                     </Link>
                                                 </div>
                                             </motion.div>

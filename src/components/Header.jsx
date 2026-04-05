@@ -29,32 +29,14 @@ const EDENROBE_GROUPS = [
     {
         group: 'Edenrobe',
         items: [
-            {
-                label: 'Edenrobe Printed',
-                desc:  'Vibrant seasonal lawn prints',
-                icon:  '🌿',
-                href:  '/shop?category=Edenrobe+Printed',
-                gradient: 'from-emerald-50 to-teal-50',
-            },
-            {
-                label: 'Premium & Festive',
-                desc:  'Luxury fabrics for special occasions',
-                icon:  '✨',
-                href:  '/shop?category=Premium+Festive',
-                gradient: 'from-amber-50 to-yellow-50',
-            },
+            { label: 'Edenrobe Printed',  desc: 'Vibrant seasonal lawn prints',         href: '/shop?category=Edenrobe+Printed'          },
+            { label: 'Premium & Festive', desc: 'Luxury fabrics for special occasions',  href: '/shop?category=Premium+Festive'           },
         ],
     },
     {
         group: 'Fragrance',
         items: [
-            {
-                label: 'Edenrobe',
-                desc:  'Signature Edenrobe scents',
-                icon:  '🌸',
-                href:  '/shop?category=Fragrance&brand=edenrobe',
-                gradient: 'from-pink-50 to-rose-50',
-            },
+            { label: 'Edenrobe',          desc: 'Signature Edenrobe scents',             href: '/shop?category=Fragrance&brand=edenrobe'  },
         ],
     },
 ];
@@ -211,12 +193,9 @@ const Header = () => {
                                             className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[420px] bg-white rounded-[28px] shadow-2xl shadow-gray-400/20 border border-gray-100 overflow-hidden"
                                         >
                                             {/* Dark header */}
-                                            <div className="bg-gradient-to-r from-gray-950 to-gray-800 px-7 py-5 flex items-center justify-between">
-                                                <div>
-                                                    <p className="text-[9px] font-black uppercase tracking-[0.45em] text-white/40 mb-0.5">Exclusive Collection</p>
-                                                    <h3 className="text-xl font-black text-white uppercase tracking-tight leading-none">Edenrobe</h3>
-                                                </div>
-                                                <div className="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center text-xl">✦</div>
+                                            <div className="bg-gradient-to-r from-gray-950 to-gray-800 px-7 py-5">
+                                                <p className="text-[9px] font-black uppercase tracking-[0.45em] text-white/40 mb-0.5">Exclusive Collection</p>
+                                                <h3 className="text-xl font-black text-white uppercase tracking-tight leading-none">Edenrobe</h3>
                                             </div>
 
                                             {/* Grouped sub-items */}
@@ -529,12 +508,9 @@ const Header = () => {
                                                 className="overflow-hidden"
                                             >
                                                 {/* Mini dark header */}
-                                                <div className="mx-4 mb-3 bg-gradient-to-r from-gray-950 to-gray-800 rounded-2xl px-4 py-3 flex items-center gap-3">
-                                                    <div className="text-white/60 text-xl">✦</div>
-                                                    <div>
-                                                        <p className="text-[8px] font-black uppercase tracking-[0.4em] text-white/40">Exclusive</p>
-                                                        <p className="text-[13px] font-black text-white uppercase tracking-tight leading-none">Edenrobe Collection</p>
-                                                    </div>
+                                                <div className="mx-4 mb-3 bg-gradient-to-r from-gray-950 to-gray-800 rounded-2xl px-4 py-3">
+                                                    <p className="text-[8px] font-black uppercase tracking-[0.4em] text-white/40">Exclusive</p>
+                                                    <p className="text-[13px] font-black text-white uppercase tracking-tight leading-none">Edenrobe Collection</p>
                                                 </div>
 
                                                 <div className="pl-4 space-y-0 pb-3">
@@ -548,13 +524,13 @@ const Header = () => {
                                                                     key={cat.label}
                                                                     to={cat.href}
                                                                     onClick={() => setIsMobileMenuOpen(false)}
-                                                                    className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-pink-50 transition-all group"
+                                                                    className="flex items-center justify-between px-4 py-3 rounded-xl hover:bg-pink-50 transition-all group"
                                                                 >
-                                                                    <span className="text-xl">{cat.icon}</span>
                                                                     <div className="min-w-0">
                                                                         <p className="text-[12px] font-black text-gray-700 group-hover:text-[#EB3461] uppercase tracking-wide transition-colors leading-tight">{cat.label}</p>
                                                                         <p className="text-[10px] text-gray-400 font-medium mt-0.5 leading-tight">{cat.desc}</p>
                                                                     </div>
+                                                                    <ArrowRight size={14} className="text-gray-300 group-hover:text-[#EB3461] transition-colors shrink-0" />
                                                                 </Link>
                                                             ))}
                                                             {gi < EDENROBE_GROUPS.length - 1 && (
@@ -565,10 +541,10 @@ const Header = () => {
                                                     <Link
                                                         to="/shop?brand=edenrobe"
                                                         onClick={() => setIsMobileMenuOpen(false)}
-                                                        className="flex items-center gap-3 px-4 py-3 rounded-xl bg-gray-900 hover:bg-[#EB3461] transition-all group mt-2"
+                                                        className="flex items-center justify-between px-4 py-3 rounded-xl bg-gray-900 hover:bg-[#EB3461] transition-all group mt-2"
                                                     >
-                                                        <span className="text-xl text-white">✦</span>
                                                         <span className="text-[12px] font-black text-white uppercase tracking-wide">All Edenrobe</span>
+                                                        <ArrowRight size={14} className="text-white/50 group-hover:text-white transition-colors shrink-0" />
                                                     </Link>
                                                 </div>
                                             </motion.div>

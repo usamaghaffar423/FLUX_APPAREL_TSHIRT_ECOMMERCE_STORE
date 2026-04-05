@@ -11,7 +11,10 @@ import { useAuth } from '../context/AuthContext';
 // ── Constants ────────────────────────────────────────────────────────────────
 
 const SUGGESTED_CATEGORIES = [
-    'Shorts', 'Kurta', 'Shalwar Kameez', 'Fragrance', 'Imported Fragrance',
+    // Edenrobe
+    'Edenrobe Printed', 'Premium & Festive', 'Fragrance',
+    // General
+    'Shorts', 'Kurta', 'Shalwar Kameez', 'Imported Fragrance',
     'Wrist Watches', 'Accessories', 'HandBags',
 ];
 

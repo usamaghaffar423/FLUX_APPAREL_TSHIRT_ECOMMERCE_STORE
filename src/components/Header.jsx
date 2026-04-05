@@ -35,30 +35,37 @@ const NAV_ITEMS = [
     { label: 'Contact',      href: '/contact'                                                },
 ];
 
-const EDENROBE_ITEMS = [
+const EDENROBE_GROUPS = [
     {
-        label: 'Printed Unstitch Lawn',
-        desc:  'Vibrant seasonal prints for every occasion',
-        icon:  '🌿',
-        href:  '/shop?category=Printed+Unstitch+Lawn',
-        gradient: 'from-emerald-50 to-teal-50',
-        accent: 'group-hover:text-emerald-600',
+        group: 'Edenrobe',
+        items: [
+            {
+                label: 'Edenrobe Printed',
+                desc:  'Vibrant seasonal lawn prints',
+                icon:  '🌿',
+                href:  '/shop?category=Edenrobe+Printed',
+                gradient: 'from-emerald-50 to-teal-50',
+            },
+            {
+                label: 'Premium & Festive',
+                desc:  'Luxury fabrics for special occasions',
+                icon:  '✨',
+                href:  '/shop?category=Premium+Festive',
+                gradient: 'from-amber-50 to-yellow-50',
+            },
+        ],
     },
     {
-        label: 'Premium & Festive Unstitch',
-        desc:  'Luxury fabrics crafted for special moments',
-        icon:  '✨',
-        href:  '/shop?category=Premium+Festive+Unstitch',
-        gradient: 'from-amber-50 to-yellow-50',
-        accent: 'group-hover:text-amber-600',
-    },
-    {
-        label: 'Fragrances',
-        desc:  'Signature Edenrobe scents, signature style',
-        icon:  '🌸',
-        href:  '/shop?category=Fragrances',
-        gradient: 'from-pink-50 to-rose-50',
-        accent: 'group-hover:text-[#EB3461]',
+        group: 'Fragrance',
+        items: [
+            {
+                label: 'Edenrobe',
+                desc:  'Signature Edenrobe scents',
+                icon:  '🌸',
+                href:  '/shop?category=Fragrance&brand=edenrobe',
+                gradient: 'from-pink-50 to-rose-50',
+            },
+        ],
     },
 ];
 
@@ -222,23 +229,35 @@ const Header = () => {
                                                 <div className="w-10 h-10 rounded-2xl bg-white/10 flex items-center justify-center text-xl">✦</div>
                                             </div>
 
-                                            {/* Sub-items */}
-                                            <div className="p-4 space-y-2">
-                                                {EDENROBE_ITEMS.map(item => (
-                                                    <Link
-                                                        key={item.label}
-                                                        to={item.href}
-                                                        className="group flex items-center gap-4 p-4 rounded-2xl hover:bg-gray-50 transition-all border border-transparent hover:border-gray-100"
-                                                    >
-                                                        <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${item.gradient} flex items-center justify-center text-xl shrink-0`}>
-                                                            {item.icon}
-                                                        </div>
-                                                        <div className="flex-1 min-w-0">
-                                                            <p className={`text-[11px] font-black uppercase tracking-wide text-gray-900 transition-colors ${item.accent}`}>{item.label}</p>
-                                                            <p className="text-[10px] text-gray-400 font-medium mt-0.5 leading-tight">{item.desc}</p>
-                                                        </div>
-                                                        <ArrowRight size={14} className="text-gray-300 group-hover:text-gray-700 group-hover:translate-x-1 transition-all shrink-0" />
-                                                    </Link>
+                                            {/* Grouped sub-items */}
+                                            <div className="p-4 space-y-1">
+                                                {EDENROBE_GROUPS.map((grp, gi) => (
+                                                    <div key={grp.group}>
+                                                        {/* Section label */}
+                                                        <p className="px-4 pt-3 pb-1.5 text-[9px] font-black uppercase tracking-[0.35em] text-gray-400">
+                                                            {grp.group}
+                                                        </p>
+                                                        {grp.items.map(item => (
+                                                            <Link
+                                                                key={item.label}
+                                                                to={item.href}
+                                                                className="group flex items-center gap-4 px-4 py-3 rounded-2xl hover:bg-gray-50 transition-all border border-transparent hover:border-gray-100"
+                                                            >
+                                                                <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${item.gradient} flex items-center justify-center text-lg shrink-0`}>
+                                                                    {item.icon}
+                                                                </div>
+                                                                <div className="flex-1 min-w-0">
+                                                                    <p className="text-[11px] font-black uppercase tracking-wide text-gray-900 group-hover:text-[#EB3461] transition-colors">{item.label}</p>
+                                                                    <p className="text-[10px] text-gray-400 font-medium mt-0.5 leading-tight">{item.desc}</p>
+                                                                </div>
+                                                                <ArrowRight size={13} className="text-gray-300 group-hover:text-[#EB3461] group-hover:translate-x-1 transition-all shrink-0" />
+                                                            </Link>
+                                                        ))}
+                                                        {/* Divider between groups */}
+                                                        {gi < EDENROBE_GROUPS.length - 1 && (
+                                                            <div className="mx-4 my-1 h-px bg-gray-100" />
+                                                        )}
+                                                    </div>
                                                 ))}
                                             </div>
 
@@ -534,20 +553,30 @@ const Header = () => {
                                                     </div>
                                                 </div>
 
-                                                <div className="pl-4 space-y-1 pb-3">
-                                                    {EDENROBE_ITEMS.map(cat => (
-                                                        <Link
-                                                            key={cat.label}
-                                                            to={cat.href}
-                                                            onClick={() => setIsMobileMenuOpen(false)}
-                                                            className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-pink-50 transition-all group"
-                                                        >
-                                                            <span className="text-xl">{cat.icon}</span>
-                                                            <div className="min-w-0">
-                                                                <p className="text-[12px] font-black text-gray-700 group-hover:text-[#EB3461] uppercase tracking-wide transition-colors leading-tight">{cat.label}</p>
-                                                                <p className="text-[10px] text-gray-400 font-medium mt-0.5 leading-tight">{cat.desc}</p>
-                                                            </div>
-                                                        </Link>
+                                                <div className="pl-4 space-y-0 pb-3">
+                                                    {EDENROBE_GROUPS.map((grp, gi) => (
+                                                        <div key={grp.group}>
+                                                            <p className="px-4 pt-3 pb-1 text-[9px] font-black uppercase tracking-[0.35em] text-gray-400">
+                                                                {grp.group}
+                                                            </p>
+                                                            {grp.items.map(cat => (
+                                                                <Link
+                                                                    key={cat.label}
+                                                                    to={cat.href}
+                                                                    onClick={() => setIsMobileMenuOpen(false)}
+                                                                    className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-pink-50 transition-all group"
+                                                                >
+                                                                    <span className="text-xl">{cat.icon}</span>
+                                                                    <div className="min-w-0">
+                                                                        <p className="text-[12px] font-black text-gray-700 group-hover:text-[#EB3461] uppercase tracking-wide transition-colors leading-tight">{cat.label}</p>
+                                                                        <p className="text-[10px] text-gray-400 font-medium mt-0.5 leading-tight">{cat.desc}</p>
+                                                                    </div>
+                                                                </Link>
+                                                            ))}
+                                                            {gi < EDENROBE_GROUPS.length - 1 && (
+                                                                <div className="mx-4 my-1 h-px bg-gray-100" />
+                                                            )}
+                                                        </div>
                                                     ))}
                                                     <Link
                                                         to="/shop?brand=edenrobe"
